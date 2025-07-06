@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Connections - For Seal</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    #connections-board {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+    .connections-word {
+      background: #a0452e;
+      color: #fffdfc;
+      border: none;
+      border-radius: 10px;
+      padding: 0.8rem 1.2rem;
+      font-size: 1.1rem;
+      margin: 2px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .connections-word.selected {
+      background: #e6b800;
+      color: #4a1c1c;
+      transform: scale(1.08);
+      font-weight: bold;
+    }
+    .connections-word:disabled {
+      background: #555;
+      color: #bbb;
+      cursor: not-allowed;
+    }
+    #connections-message {
+      min-height: 2.5em;
+      margin-bottom: 1.5rem;
+      color: #ffe8cc;
+      font-size: 1.1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Connections for Seal</h1>
+    <div id="connections-board"></div>
+    <div id="connections-message"></div>
+    <button onclick="location.href='index.html'" class="game-btn" style="margin-top: 2rem;">Back to Home</button>
+  </div>
+  <script src="js/connections.js"></script>
+</body>
+</html>
