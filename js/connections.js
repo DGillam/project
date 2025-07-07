@@ -1,69 +1,110 @@
-
-const groups = {
-  "Little Plushies that love you": ["Fox", "Pig", "Seal", "Hippo"],
-  "Animals marking your skin": ["Beluga", "Bear", "Bird", "Rat"],
-  "Things That Hang from your ears": ["Fish", "Eye", "Hoop", "China"],
-  "A few of your favourite things": ["Hortensia", "Burgundy", "Wine", "Music"]
+const connectionsData = {
+  categories: [
+    {
+      name: "Animals marking your skin",
+      words: ["Beluga", "Bear", "Bird", "Rat"]
+    },
+    {
+      name: "Little Plushies that love you",
+      words: ["Fox", "Pig", "Seal", "Hippo"]
+    },
+    {
+      name: "Things That Hang from your ears",
+      words: ["Fish", "Eye", "Hoop", "China"]
+    },
+    {
+      name: "A few of your favourite things",
+      words: ["Change1", "Change2", "Hortensia", "Burgundy"]
+    }
+  ]
 };
 
-const allWords = Object.values(groups).flat().sort(() => Math.random() - 0.5);
-const selected = [];
-const found = [];
-const grid = document.getElementById("word-grid");
-const feedback = document.getElementById("feedback");
-const foundDiv = document.getElementById("found-groups");
+let selectedWords = [];
+let foundGroups = [];
+let guessesLeft = 4;
 
-allWords.forEach(word => {
-  const div = document.createElement("div");
-  div.className = "word";
-  div.textContent = word;
-  div.onclick = () => toggleWord(div);
-  grid.appendChild(div);
-});
+const board = document.getElementById("connections-board");
+const message = document.getElementById("connections-message");
+const lives = document.getElementById("connections-lives");
 
-function toggleWord(div) {
-  const word = div.textContent;
-  if (div.classList.contains("selected")) {
-    div.classList.remove("selected");
-    selected.splice(selected.indexOf(word), 1);
-  } else if (selected.length < 4) {
-    div.classList.add("selected");
-    selected.push(word);
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function renderBoard() {
+  const words = connectionsData.categories.flatMap(cat => cat.words);
+  shuffle(words);
+  board.innerHTML = "";
+  words.forEach(word => {
+    const btn = document.createElement("button");
+    btn.className = "connection-tile";
+    btn.textContent = word;
+    btn.onclick = () => toggleWord(word, btn);
+    board.appendChild(btn);
+  });
+}
+
+function toggleWord(word, btn) {
+  if (selectedWords.includes(word)) {
+    selectedWords = selectedWords.filter(w => w !== word);
+    btn.classList.remove("selected");
+  } else {
+    if (selectedWords.length === 4) return;
+    selectedWords.push(word);
+    btn.classList.add("selected");
+    if (selectedWords.length === 4) checkGuess();
   }
 }
 
-document.getElementById("submit-btn").onclick = () => {
-  if (selected.length !== 4) {
-    feedback.textContent = "Select exactly 4 words.";
-    return;
-  }
+function checkGuess() {
+  const match = connectionsData.categories.find(cat =>
+    cat.words.every(w => selectedWords.includes(w))
+  );
 
-  let matchedGroup = null;
-  for (const [groupName, words] of Object.entries(groups)) {
-    if (words.every(w => selected.includes(w))) {
-      matchedGroup = groupName;
-      break;
-    }
-  }
-
-  if (matchedGroup) {
-    feedback.textContent = `✅ Group found: ${matchedGroup}`;
-    found.push(...selected);
-    const groupEl = document.createElement("p");
-    groupEl.textContent = `${matchedGroup}: ${selected.join(", ")}`;
-    foundDiv.appendChild(groupEl);
-    selected.forEach(word => {
-      const el = Array.from(document.querySelectorAll(".word")).find(d => d.textContent === word);
-      if (el) el.remove();
-    });
-    selected.length = 0;
-
-    if (found.length === 16) {
-      feedback.innerHTML = "🎉 All groups found! You really *know* this Seal.<br><em>Just like our little plushies know us.</em>";
-    }
+  if (match && !foundGroups.includes(match.name)) {
+    foundGroups.push(match.name);
+    highlightGroup("correct", match.words);
+    message.innerHTML = `✅ Group found: <strong>${match.name}</strong>`;
   } else {
-    feedback.textContent = "❌ Nope — try a different combo.";
-    document.querySelectorAll(".selected").forEach(el => el.classList.remove("selected"));
-    selected.length = 0;
+    guessesLeft--;
+    highlightGroup("incorrect", selectedWords);
+    message.innerHTML = `❌ Nope! Tries left: ${guessesLeft}`;
+    if (guessesLeft === 0) {
+      endGame();
+    }
   }
-};
+
+  selectedWords = [];
+  updateLives();
+}
+
+function highlightGroup(className, words) {
+  const tiles = document.querySelectorAll(".connection-tile");
+  tiles.forEach(tile => {
+    if (words.includes(tile.textContent)) {
+      tile.classList.add(className);
+      tile.disabled = true;
+    }
+  });
+}
+
+function updateLives() {
+  lives.innerHTML = "❤️ ".repeat(guessesLeft);
+}
+
+function endGame() {
+  const remaining = connectionsData.categories
+    .filter(cat => !foundGroups.includes(cat.name))
+    .map(cat => `<strong>${cat.name}</strong>: ${cat.words.join(", ")}`)
+    .join("<br>");
+  message.innerHTML = `Game over!<br>${remaining}`;
+  const tiles = document.querySelectorAll(".connection-tile");
+  tiles.forEach(tile => tile.disabled = true);
+}
+
+renderBoard();
+updateLives();
