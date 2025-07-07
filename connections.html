@@ -18,32 +18,41 @@
       color: #7c3f3f;
     }
     #connections-board {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin: 20px auto;
-      max-width: 400px;
-    }
-    .connection-tile {
-      padding: 10px;
-      background-color: #fff3e6;
-      border: 2px solid #b0846f;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: background-color 0.2s ease;
-    }
-    .connection-tile.selected {
-      background-color: #f5d4b2;
-    }
-    .connection-tile.correct {
-      background-color: #a1d99b;
-      color: white;
-    }
-    .connection-tile.incorrect {
-      background-color: #fcaeae;
-      color: white;
-    }
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  max-width: 400px;
+  margin: 20px auto;
+}
+
+.connection-tile {
+  aspect-ratio: 1 / 1; /* makes tiles square */
+  width: 100%;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 10px;
+  border: 2px solid #b0846f;
+  background-color: #fff3e6;
+  color: #5a2a2a;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.connection-tile.selected {
+  background-color: #f5d4b2;
+}
+
+.connection-tile.correct {
+  background-color: #6bbf59;
+  color: white;
+}
+
+.connection-tile.incorrect {
+  background-color: #e57373;
+  color: white;
+}
+
+    
     #connections-message {
       margin: 20px auto;
       font-weight: bold;
