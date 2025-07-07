@@ -1,84 +1,69 @@
-const connectionsCategories = [
-  {
-    name: "Animals marking your skin",
-    words: ["Beluga", "Bear", "Bird", "Rat"],
-    difficulty: 2
-  },
-  {
-    name: "Little Plushies that love you",
-    words: ["Fox", "Pig", "Seal", "Hippo"],
-    difficulty: 1
-  },
-  {
-    name: "Things That Hang from your ears",
-    words: ["Fish", "Eye", "Hoop", "China"],
-    difficulty: 3
-  },
-  {
-    name: "A few of your favourite things",
-    words: ["Hortensia", "Burgundy", "Wine", "Music"],
-    difficulty: 4
-  }
-];
 
-// Flatten and shuffle all words
-let allWords = connectionsCategories.flatMap(cat => cat.words);
-allWords = allWords
-  .map(word => ({ word, sort: Math.random() }))
-  .sort((a, b) => a.sort - b.sort)
-  .map(obj => obj.word);
+const groups = {
+  "Little Plushies that love you": ["Fox", "Pig", "Seal", "Hippo"],
+  "Animals marking your skin": ["Beluga", "Bear", "Bird", "Rat"],
+  "Things That Hang from your ears": ["Fish", "Eye", "Hoop", "China"],
+  "A few of your favourite things": ["Hortensia", "Burgundy", "Wine", "Music"]
+};
 
-let selectedWords = [];
-let foundCategories = [];
-const board = document.getElementById("connections-board");
-const message = document.getElementById("connections-message");
+const allWords = Object.values(groups).flat().sort(() => Math.random() - 0.5);
+const selected = [];
+const found = [];
+const grid = document.getElementById("word-grid");
+const feedback = document.getElementById("feedback");
+const foundDiv = document.getElementById("found-groups");
 
-// Render word buttons
-function renderBoard() {
-  board.innerHTML = "";
-  allWords.forEach(word => {
-    const btn = document.createElement("button");
-    btn.textContent = word;
-    btn.className = "connections-word";
-    btn.disabled = foundCategories.some(cat =>
-      connectionsCategories.find(c => c.name === cat).words.includes(word)
-    );
-    if (selectedWords.includes(word)) btn.classList.add("selected");
-    btn.onclick = () => selectWord(word);
-    board.appendChild(btn);
-  });
-}
+allWords.forEach(word => {
+  const div = document.createElement("div");
+  div.className = "word";
+  div.textContent = word;
+  div.onclick = () => toggleWord(div);
+  grid.appendChild(div);
+});
 
-function selectWord(word) {
-  if (selectedWords.includes(word)) {
-    selectedWords = selectedWords.filter(w => w !== word);
-  } else if (selectedWords.length < 4) {
-    selectedWords.push(word);
-  }
-  renderBoard();
-  if (selectedWords.length === 4) {
-    setTimeout(checkSelection, 200);
+function toggleWord(div) {
+  const word = div.textContent;
+  if (div.classList.contains("selected")) {
+    div.classList.remove("selected");
+    selected.splice(selected.indexOf(word), 1);
+  } else if (selected.length < 4) {
+    div.classList.add("selected");
+    selected.push(word);
   }
 }
 
-function checkSelection() {
-  const match = connectionsCategories.find(cat =>
-    cat.words.every(w => selectedWords.includes(w)) &&
-    !foundCategories.includes(cat.name)
-  );
-  if (match) {
-    foundCategories.push(match.name);
-    message.textContent = `Correct! Category: ${match.name}`;
-    // Optionally, highlight found words
+document.getElementById("submit-btn").onclick = () => {
+  if (selected.length !== 4) {
+    feedback.textContent = "Select exactly 4 words.";
+    return;
+  }
+
+  let matchedGroup = null;
+  for (const [groupName, words] of Object.entries(groups)) {
+    if (words.every(w => selected.includes(w))) {
+      matchedGroup = groupName;
+      break;
+    }
+  }
+
+  if (matchedGroup) {
+    feedback.textContent = `✅ Group found: ${matchedGroup}`;
+    found.push(...selected);
+    const groupEl = document.createElement("p");
+    groupEl.textContent = `${matchedGroup}: ${selected.join(", ")}`;
+    foundDiv.appendChild(groupEl);
+    selected.forEach(word => {
+      const el = Array.from(document.querySelectorAll(".word")).find(d => d.textContent === word);
+      if (el) el.remove();
+    });
+    selected.length = 0;
+
+    if (found.length === 16) {
+      feedback.innerHTML = "🎉 All groups found! You really *know* this Seal.<br><em>Just like our little plushies know us.</em>";
+    }
   } else {
-    message.textContent = "Not quite! Try again.";
+    feedback.textContent = "❌ Nope — try a different combo.";
+    document.querySelectorAll(".selected").forEach(el => el.classList.remove("selected"));
+    selected.length = 0;
   }
-  selectedWords = [];
-  renderBoard();
-  if (foundCategories.length === 4) {
-    message.innerHTML = "<strong>You found all the connections!</strong>";
-  }
-}
-
-// Initial render
-renderBoard();
+};
