@@ -3,53 +3,62 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Connections - For Seal</title>
-  <link rel="stylesheet" href="css/styles.css" />
+  <title>Connections – Seal Edition</title>
+  <link rel="stylesheet" href="css/style.css" />
   <style>
+    body {
+      font-family: sans-serif;
+      background-color: #fef7f2;
+      color: #5a2a2a;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 10px;
+      color: #7c3f3f;
+    }
     #connections-board {
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
       gap: 10px;
-      justify-content: center;
-      margin-bottom: 1.5rem;
+      margin: 20px auto;
+      max-width: 400px;
     }
-    .connections-word {
-      background: #a0452e;
-      color: #fffdfc;
-      border: none;
+    .connection-tile {
+      padding: 10px;
+      background-color: #fff3e6;
+      border: 2px solid #b0846f;
       border-radius: 10px;
-      padding: 0.8rem 1.2rem;
-      font-size: 1.1rem;
-      margin: 2px;
       cursor: pointer;
-      transition: background 0.2s, transform 0.2s;
+      font-size: 1rem;
+      transition: background-color 0.2s ease;
     }
-    .connections-word.selected {
-      background: #e6b800;
-      color: #4a1c1c;
-      transform: scale(1.08);
-      font-weight: bold;
+    .connection-tile.selected {
+      background-color: #f5d4b2;
     }
-    .connections-word:disabled {
-      background: #555;
-      color: #bbb;
-      cursor: not-allowed;
+    .connection-tile.correct {
+      background-color: #a1d99b;
+      color: white;
+    }
+    .connection-tile.incorrect {
+      background-color: #fcaeae;
+      color: white;
     }
     #connections-message {
-      min-height: 2.5em;
-      margin-bottom: 1.5rem;
-      color: #ffe8cc;
-      font-size: 1.1rem;
+      margin: 20px auto;
+      font-weight: bold;
+    }
+    #connections-lives {
+      font-size: 1.5rem;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Connections for Seal</h1>
-    <div id="connections-board"></div>
-    <div id="connections-message"></div>
-    <button onclick="location.href='index.html'" class="game-btn" style="margin-top: 2rem;">Back to Home</button>
-  </div>
+  <h1>Seal Connections 🦭</h1>
+  <div id="connections-lives"></div>
+  <div id="connections-board"></div>
+  <div id="connections-message"></div>
+
   <script src="js/connections.js"></script>
 </body>
 </html>
