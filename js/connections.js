@@ -61,17 +61,17 @@ function renderBoard() {
   const words = connectionsData.categories.flatMap(cat => cat.words)
     .filter(word => !solvedWords.includes(word));
   shuffle(words);
-  const row = document.createElement("div");
-  row.className = "connections-row";
+  const grid = document.createElement("div");
+  grid.className = "connections-grid";
   words.forEach(word => {
     const btn = document.createElement("button");
     btn.className = "connection-tile";
     btn.textContent = word;
     btn.onclick = () => toggleWord(word, btn);
     if (selectedWords.includes(word)) btn.classList.add("selected");
-    row.appendChild(btn);
+    grid.appendChild(btn);
   });
-  board.appendChild(row);
+  board.appendChild(grid);
 }
 
 function toggleWord(word, btn) {
