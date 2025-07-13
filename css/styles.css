@@ -143,26 +143,26 @@ h1 {
   100% { transform: translateX(0);}
 }
 
-/* Connections layout (scoped) */
-#connections-board .connections-row {
+/* Connections layout */
+.connections-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+#connections-board {
+  max-width: 420px;
+  margin: 0 auto 1.5rem auto;
+}
+.connections-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
-  justify-content: center;
-  margin-bottom: 0.2em;
   width: 100%;
   max-width: 420px;
-  box-sizing: border-box;
-}
-#connections-board .connections-summary-theme {
-  font-size: 0.98em;
-  opacity: 0.85;
-  margin-bottom: 1.2em;
-  margin-top: 0.2em;
-  text-align: center;
-  max-width: 420px;
-  word-break: break-word;
-  white-space: normal;
+  margin: 0 auto 10px auto;
+  justify-content: center;
+  min-width: 340px;
 }
 
 /* Keyboard styles (Wordle) */
