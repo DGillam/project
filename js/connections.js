@@ -27,6 +27,7 @@ let selectedWords = [];
 let foundGroups = [];
 let guessesLeft = 4;
 let solvedGroups = []; // Store solved groups for display
+let allWords = shuffle(connectionsData.categories.flatMap(cat => cat.words)); // shuffled once at start
 
 const board = document.getElementById("connections-board");
 const message = document.getElementById("connections-message");
@@ -43,6 +44,19 @@ function shuffle(array) {
 function renderBoard(doShuffle = false) {
   // Show solved groups at the top
   board.innerHTML = "";
+  if (foundGroups.length === 4) {
+    // All groups found: show summary rectangles
+    solvedGroups.forEach(group => {
+      const summaryDiv = document.createElement("div");
+      summaryDiv.className = `connections-summary cat-${group.color}`;
+      summaryDiv.innerHTML = `
+        <div class="connections-summary-words">${group.words.join(", ")}</div>
+        <div class="connections-summary-theme">${connectionsData.categories.find(c => c.color === group.color).name}</div>
+      `;
+      board.appendChild(summaryDiv);
+    });
+    return;
+  }
   solvedGroups.forEach(group => {
     const row = document.createElement("div");
     row.className = "connections-row";
@@ -58,10 +72,10 @@ function renderBoard(doShuffle = false) {
 
   // Remaining words
   const solvedWords = solvedGroups.flatMap(g => g.words);
-  let words = connectionsData.categories.flatMap(cat => cat.words)
-    .filter(word => !solvedWords.includes(word));
-  if (doShuffle) shuffle(words);
-
+  if (doShuffle) {
+    allWords = shuffle(allWords.filter(word => !solvedWords.includes(word)));
+  }
+  const words = allWords.filter(word => !solvedWords.includes(word));
   const grid = document.createElement("div");
   grid.className = "connections-grid";
   words.forEach(word => {
@@ -140,7 +154,7 @@ function clearIncorrectHighlight(words) {
 
 function updateLives() {
   const seals = "🦭 ".repeat(guessesLeft);
-  lives.innerHTML = `<span style="font-size:1.2em;">Mistakes remaining: ${seals}</span>`;
+  lives.innerHTML = `<span style="font-size:0.95em;">Mistakes remaining: ${seals}</span>`;
 }
 
 function endGame() {
@@ -167,6 +181,36 @@ document.getElementById("submit-btn").onclick = () => {
     message.innerHTML = "Select 4 tiles before submitting.";
   }
 };
+
+// Add CSS for summary rectangles
+const style = document.createElement('style');
+style.innerHTML = `
+.connections-summary {
+  width: 100%;
+  max-width: 420px;
+  margin: 10px auto;
+  padding: 1.2em 1em 0.7em 1em;
+  border-radius: 14px;
+  font-size: 1.1em;
+  text-align: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.connections-summary-words {
+  font-weight: bold;
+  font-size: 1.15em;
+  margin-bottom: 0.4em;
+}
+.connections-summary-theme {
+  font-size: 0.98em;
+  opacity: 0.85;
+  margin-bottom: 0.1em;
+}
+`;
+document.head.appendChild(style);
 
 renderBoard();
 updateLives();
