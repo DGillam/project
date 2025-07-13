@@ -3,17 +3,16 @@ body {
   font-family: 'Georgia', serif;
   background: linear-gradient(to bottom right, #4a1c1c, #9e4d2c);
   color: #fff5e1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  min-height: 100vh;
   text-align: center;
+  /* Remove flex centering to allow scrolling and normal flow */
 }
 
 .container {
   max-width: 400px;
   padding: 2rem;
   background: transparent;
+  margin: 0 auto;
 }
 
 .container.wide {
@@ -197,4 +196,18 @@ h1 {
 /* JavaScript generated styles */
 body {
   background: linear-gradient(to bottom right, #4a1c1c, #9e4d2c);
+}
+
+#wordle-board {
+  display: grid;
+  grid-template-rows: repeat(6, 1fr);
+  gap: 10px;
+  justify-content: center;
+  margin: 0 auto 1.5rem auto;
+  max-width: 270px;
+}
+.row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5px;
 }

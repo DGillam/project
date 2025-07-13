@@ -1,23 +1,23 @@
 const connectionsData = {
   categories: [
     {
-      name: "Animals marking your skin",
-      words: ["Beluga", "Bear", "Bird", "Rat"],
+      name: "How to resurrect Mathieu",
+      words: ["Garlic", "Wine", "Tattoos", "Triangle"],
       color: "green"
     },
     {
-      name: "Little Plushies that love you",
+      name: "Little plushies that love you",
       words: ["Fox", "Pig", "Seal", "Hippo"],
       color: "yellow"
     },
     {
-      name: "Things That Hang from your ears",
+      name: "Things that hang from your ears",
       words: ["Fish", "Eye", "Hoop", "China"],
       color: "blue"
     },
     {
       name: "A few of your favourite things",
-      words: ["Hortensia", "Burgundy", "Wine", "Music"],
+      words: ["Hortensia", "Burgundy", "Beluga", "Vermeer"],
       color: "purple"
     }
   ]
