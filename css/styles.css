@@ -76,6 +76,17 @@ h1 {
   justify-content: center;
 }
 
+.connection-tile:hover {
+  background-color: #c55b3b;
+  transform: scale(1.05);
+}
+
+.connection-tile.selected {
+  border: 2px solid #ffe066;
+  background: #7be07b;
+  color: #1d3b1d;
+}
+
 .tile.correct, .connection-tile.cat-green {
   background: #7be07b !important;
   color: #1d3b1d !important;
@@ -182,57 +193,4 @@ h1 {
 /* JavaScript generated styles */
 body {
   background: linear-gradient(to bottom right, #4a1c1c, #9e4d2c);
-}
-
-.connections-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(80px, 1fr));
-  gap: 10px;
-  width: 100%;
-  max-width: 420px;
-  margin: 0 auto 10px auto;
-  justify-content: center;
-  min-width: 340px;
-}
-
-.connection-tile {
-  background: #a0452e;
-  color: #fffdfc;
-  border: none;
-  border-radius: 10px;
-  font-size: 1.1rem;
-  margin: 2px;
-  cursor: pointer;
-  padding: 0.8rem 0.5rem;
-  transition: background 0.2s, transform 0.2s;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.connection-tile:hover {
-  background-color: #c55b3b;
-  transform: scale(1.05);
-}
-
-.connection-tile.selected {
-  border: 2px solid #ffe066;
-  background: #7be07b;
-  color: #1d3b1d;
-}
-
-.connection-tile.incorrect {
-  background: #a0452e !important;
-  color: #fff !important;
-  border: 2px solid #e74c3c !important;
-  animation: shake 0.3s;
-}
-
-@keyframes shake {
-  0% { transform: translateX(0);}
-  25% { transform: translateX(-4px);}
-  50% { transform: translateX(4px);}
-  75% { transform: translateX(-4px);}
-  100% { transform: translateX(0);}
 }
