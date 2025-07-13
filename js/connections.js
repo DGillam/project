@@ -2,19 +2,23 @@ const connectionsData = {
   categories: [
     {
       name: "Animals marking your skin",
-      words: ["Beluga", "Bear", "Bird", "Rat"]
+      words: ["Beluga", "Bear", "Bird", "Rat"],
+      color: "green"
     },
     {
       name: "Little Plushies that love you",
-      words: ["Fox", "Pig", "Seal", "Hippo"]
+      words: ["Fox", "Pig", "Seal", "Hippo"],
+      color: "yellow"
     },
     {
       name: "Things That Hang from your ears",
-      words: ["Fish", "Eye", "Hoop", "China"]
+      words: ["Fish", "Eye", "Hoop", "China"],
+      color: "blue"
     },
     {
       name: "A few of your favourite things",
-      words: ["Change1", "Change2", "Hortensia", "Burgundy"]
+      words: ["Hortensia", "Burgundy", "Wine", "Music"],
+      color: "purple"
     }
   ]
 };
@@ -22,6 +26,7 @@ const connectionsData = {
 let selectedWords = [];
 let foundGroups = [];
 let guessesLeft = 4;
+let solvedGroups = []; // Store solved groups for display
 
 const board = document.getElementById("connections-board");
 const message = document.getElementById("connections-message");
@@ -36,16 +41,37 @@ function shuffle(array) {
 }
 
 function renderBoard() {
-  const words = connectionsData.categories.flatMap(cat => cat.words);
-  shuffle(words);
+  // Show solved groups at the top
   board.innerHTML = "";
+  solvedGroups.forEach(group => {
+    const row = document.createElement("div");
+    row.className = "connections-row";
+    group.words.forEach(word => {
+      const btn = document.createElement("button");
+      btn.className = `connection-tile cat-${group.color}`;
+      btn.textContent = word;
+      btn.disabled = true;
+      row.appendChild(btn);
+    });
+    board.appendChild(row);
+  });
+
+  // Remaining words
+  const solvedWords = solvedGroups.flatMap(g => g.words);
+  const words = connectionsData.categories.flatMap(cat => cat.words)
+    .filter(word => !solvedWords.includes(word));
+  shuffle(words);
+  const row = document.createElement("div");
+  row.className = "connections-row";
   words.forEach(word => {
     const btn = document.createElement("button");
     btn.className = "connection-tile";
     btn.textContent = word;
     btn.onclick = () => toggleWord(word, btn);
-    board.appendChild(btn);
+    if (selectedWords.includes(word)) btn.classList.add("selected");
+    row.appendChild(btn);
   });
+  board.appendChild(row);
 }
 
 function toggleWord(word, btn) {
@@ -62,23 +88,34 @@ function toggleWord(word, btn) {
 
 function checkGuess() {
   const match = connectionsData.categories.find(cat =>
-    cat.words.every(w => selectedWords.includes(w))
+    cat.words.every(w => selectedWords.includes(w)) &&
+    !foundGroups.includes(cat.name)
   );
 
-  if (match && !foundGroups.includes(match.name)) {
+  if (match) {
     foundGroups.push(match.name);
-    highlightGroup("correct", match.words);
+    solvedGroups.push({ words: match.words, color: match.color });
     message.innerHTML = `✅ Group found: <strong>${match.name}</strong>`;
+    selectedWords = [];
+    setTimeout(() => {
+      renderBoard();
+      if (foundGroups.length === 4) {
+        message.innerHTML = "<strong>You found all the connections!</strong>";
+      }
+    }, 600);
   } else {
     guessesLeft--;
     highlightGroup("incorrect", selectedWords);
     message.innerHTML = `❌ Nope! Tries left: ${guessesLeft}`;
-    if (guessesLeft === 0) {
-      endGame();
-    }
+    setTimeout(() => {
+      clearIncorrectHighlight(selectedWords);
+      selectedWords = [];
+      renderBoard();
+      if (guessesLeft === 0) {
+        endGame();
+      }
+    }, 800);
   }
-
-  selectedWords = [];
   updateLives();
 }
 
@@ -87,7 +124,15 @@ function highlightGroup(className, words) {
   tiles.forEach(tile => {
     if (words.includes(tile.textContent)) {
       tile.classList.add(className);
-      tile.disabled = true;
+    }
+  });
+}
+
+function clearIncorrectHighlight(words) {
+  const tiles = document.querySelectorAll(".connection-tile");
+  tiles.forEach(tile => {
+    if (words.includes(tile.textContent)) {
+      tile.classList.remove("incorrect", "selected");
     }
   });
 }

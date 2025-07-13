@@ -47,3 +47,44 @@ h1 {
   background-color: #c55b3b;
   transform: scale(1.05);
 }
+
+.connections-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.cat-yellow {
+  background: #ffe066 !important;
+  color: #4a1c1c !important;
+  border: 2px solid #ffe066 !important;
+}
+.cat-green {
+  background: #7be07b !important;
+  color: #1d3b1d !important;
+  border: 2px solid #7be07b !important;
+}
+.cat-blue {
+  background: #6ec6f7 !important;
+  color: #1a2a3a !important;
+  border: 2px solid #6ec6f7 !important;
+}
+.cat-purple {
+  background: #b980f7 !important;
+  color: #2e1a3a !important;
+  border: 2px solid #b980f7 !important;
+}
+.connection-tile.incorrect {
+  background: #a0452e !important;
+  color: #fff !important;
+  border: 2px solid #e74c3c !important;
+  animation: shake 0.3s;
+}
+@keyframes shake {
+  0% { transform: translateX(0);}
+  25% { transform: translateX(-4px);}
+  50% { transform: translateX(4px);}
+  75% { transform: translateX(-4px);}
+  100% { transform: translateX(0);}
+}
