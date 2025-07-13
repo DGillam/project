@@ -13,6 +13,7 @@ body {
 .container {
   max-width: 400px;
   padding: 2rem;
+  background: transparent;
 }
 
 .container.wide {
@@ -44,7 +45,11 @@ h1 {
   padding: 1rem;
   border-radius: 12px;
   font-weight: bold;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s, background 0.2s;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-bottom: 0.5rem;
 }
 
 .game-btn:hover {
@@ -52,35 +57,10 @@ h1 {
   transform: scale(1.05);
 }
 
-.connections-row {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-bottom: 10px;
-}
-
-.cat-yellow {
-  background: #ffe066 !important;
-  color: #4a1c1c !important;
-  border: 2px solid #ffe066 !important;
-}
-.cat-green {
-  background: #7be07b !important;
-  color: #1d3b1d !important;
-  border: 2px solid #7be07b !important;
-}
-.cat-blue {
-  background: #6ec6f7 !important;
-  color: #1a2a3a !important;
-  border: 2px solid #6ec6f7 !important;
-}
-.cat-purple {
-  background: #b980f7 !important;
-  color: #2e1a3a !important;
-  border: 2px solid #b980f7 !important;
-}
-.connection-tile {
+/* Tile styles for all games */
+.tile, .connection-tile {
   min-width: 80px;
+  min-height: 50px;
   padding: 0.8rem 0.5rem;
   border-radius: 10px;
   font-size: 1.1rem;
@@ -91,20 +71,62 @@ h1 {
   color: #fffdfc;
   transition: background 0.2s, transform 0.2s;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+.tile.correct, .connection-tile.cat-green {
+  background: #7be07b !important;
+  color: #1d3b1d !important;
+  border: 2px solid #7be07b !important;
+}
+.tile.present, .connection-tile.cat-yellow {
+  background: #ffe066 !important;
+  color: #4a1c1c !important;
+  border: 2px solid #ffe066 !important;
+}
+.tile.absent {
+  background: #3e3e3e !important;
+  color: #fff !important;
+}
+.connection-tile.cat-blue {
+  background: #6ec6f7 !important;
+  color: #1a2a3a !important;
+  border: 2px solid #6ec6f7 !important;
+}
+.connection-tile.cat-purple {
+  background: #b980f7 !important;
+  color: #2e1a3a !important;
+  border: 2px solid #b980f7 !important;
+}
+
 .connection-tile.incorrect {
   background: #a0452e !important;
   color: #fff !important;
   border: 2px solid #e74c3c !important;
   animation: shake 0.3s;
 }
-/* Make the container wider for Connections */
+
+@keyframes shake {
+  0% { transform: translateX(0);}
+  25% { transform: translateX(-4px);}
+  50% { transform: translateX(4px);}
+  75% { transform: translateX(-4px);}
+  100% { transform: translateX(0);}
+}
+
+/* Connections layout */
+.connections-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 10px;
+}
 #connections-board {
   max-width: 420px;
   margin: 0 auto 1.5rem auto;
 }
-
-/* Ensure the grid is wide enough for 4 tiles */
 .connections-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(80px, 1fr));
@@ -113,7 +135,100 @@ h1 {
   max-width: 420px;
   margin: 0 auto 10px auto;
   justify-content: center;
+  min-width: 340px;
 }
+
+/* Wordle layout */
+#wordle-board {
+  display: grid;
+  grid-template-rows: repeat(6, 1fr);
+  gap: 10px;
+}
+.row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5px;
+}
+
+/* Keyboard styles (Wordle) */
+#keyboard {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+}
+.key {
+  padding: 10px 12px;
+  background: #804040;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-bottom: 5px;
+}
+.key:active, .key:focus {
+  background: #c55b3b;
+}
+
+#message, #connections-message {
+  margin-top: 20px;
+  min-height: 2.5em;
+  color: #ffe8cc;
+  font-size: 1.1rem;
+}
+
+/* JavaScript generated styles */
+body {
+  background: linear-gradient(to bottom right, #4a1c1c, #9e4d2c);
+}
+
+.connections-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(80px, 1fr));
+  gap: 10px;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto 10px auto;
+  justify-content: center;
+  min-width: 340px;
+}
+
+.connection-tile {
+  background: #a0452e;
+  color: #fffdfc;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  margin: 2px;
+  cursor: pointer;
+  padding: 0.8rem 0.5rem;
+  transition: background 0.2s, transform 0.2s;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.connection-tile:hover {
+  background-color: #c55b3b;
+  transform: scale(1.05);
+}
+
+.connection-tile.selected {
+  border: 2px solid #ffe066;
+  background: #7be07b;
+  color: #1d3b1d;
+}
+
+.connection-tile.incorrect {
+  background: #a0452e !important;
+  color: #fff !important;
+  border: 2px solid #e74c3c !important;
+  animation: shake 0.3s;
+}
+
 @keyframes shake {
   0% { transform: translateX(0);}
   25% { transform: translateX(-4px);}
