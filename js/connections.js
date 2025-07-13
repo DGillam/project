@@ -197,25 +197,30 @@ document.getElementById("submit-btn").onclick = () => {
   }
 };
 
-// Add or update this CSS for summary tiles and theme
+// Only apply Connections grid/tile styles inside #connections-board
 const style = document.createElement('style');
 style.innerHTML = `
-.connections-row {
-  display: flex;
+#connections-board .connections-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 10px;
   justify-content: center;
   margin-bottom: 0.2em;
-  flex-wrap: wrap;
   width: 100%;
   max-width: 420px;
   box-sizing: border-box;
 }
-.connection-tile {
+#connections-board .connection-tile {
   word-break: break-word;
   white-space: normal;
   overflow-wrap: anywhere;
   text-overflow: ellipsis;
-  max-width: 90px;
+  max-width: unset;
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
 }
 .connections-summary-theme {
   font-size: 0.98em;
