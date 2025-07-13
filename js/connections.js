@@ -125,12 +125,12 @@ function checkGuess() {
   if (match) {
     foundGroups.push(match.name);
     solvedGroups.push({ words: match.words, color: match.color });
-    message.innerHTML = `Group found: <strong>${match.name}</strong>`;
+    message.innerHTML = `<strong>${match.name}</strong>`;
     selectedWords = [];
     setTimeout(() => {
       renderBoard();
       if (foundGroups.length === 4) {
-        message.innerHTML = "<strong>You found all the connections!</strong>";
+        message.innerHTML = "<strong>You found all the seal connections!</strong>";
       }
     }, 600);
   } else {
@@ -197,27 +197,25 @@ document.getElementById("submit-btn").onclick = () => {
   }
 };
 
-// Add CSS for summary rectangles
+// Add or update this CSS for summary tiles and theme
 const style = document.createElement('style');
 style.innerHTML = `
-.connections-summary {
+.connections-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 0.2em;
+  flex-wrap: wrap;
   width: 100%;
   max-width: 420px;
-  margin: 10px auto;
-  padding: 1.2em 1em 0.7em 1em;
-  border-radius: 14px;
-  font-size: 1.1em;
-  text-align: center;
   box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 }
-.connections-summary-words {
-  font-weight: bold;
-  font-size: 1.15em;
-  margin-bottom: 0.4em;
+.connection-tile {
+  word-break: break-word;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-overflow: ellipsis;
+  max-width: 90px;
 }
 .connections-summary-theme {
   font-size: 0.98em;
@@ -225,6 +223,29 @@ style.innerHTML = `
   margin-bottom: 1.2em;
   margin-top: 0.2em;
   text-align: center;
+  max-width: 420px;
+  word-break: break-word;
+  white-space: normal;
+}
+.connections-container {
+  max-width: 500px;
+  margin: 20px auto 10px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.connections-controls {
+  display: flex;
+  gap: 0.7rem;
+  justify-content: center;
+  margin-top: 0.7rem;
+  flex-wrap: wrap;
+  max-width: 420px;
+  width: 100%;
+  box-sizing: border-box;
+}
+#connections-lives {
+  margin-bottom: 0.5rem;
 }
 `;
 document.head.appendChild(style);
