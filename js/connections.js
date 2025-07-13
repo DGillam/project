@@ -42,19 +42,34 @@ function shuffle(array) {
 }
 
 function renderBoard(doShuffle = false) {
-  // Show solved groups at the top
   board.innerHTML = "";
-  if (foundGroups.length === 4) {
-    // All groups found: show summary rectangles
-    solvedGroups.forEach(group => {
-      const summaryDiv = document.createElement("div");
-      summaryDiv.className = `connections-summary cat-${group.color}`;
-      summaryDiv.innerHTML = `
-        <div class="connections-summary-words">${group.words.join(", ")}</div>
-        <div class="connections-summary-theme">${connectionsData.categories.find(c => c.color === group.color).name}</div>
-      `;
-      board.appendChild(summaryDiv);
+  // If game is over (win or lose), show all groups as colored tiles
+  if (foundGroups.length === 4 || guessesLeft === 0) {
+    connectionsData.categories.forEach(group => {
+      const row = document.createElement("div");
+      row.className = "connections-row";
+      group.words.forEach(word => {
+        const btn = document.createElement("button");
+        btn.className = `connection-tile cat-${group.color}`;
+        btn.textContent = word;
+        btn.disabled = true;
+        row.appendChild(btn);
+      });
+      // Add theme label below the row
+      const theme = document.createElement("div");
+      theme.className = "connections-summary-theme";
+      theme.textContent = group.name;
+      board.appendChild(row);
+      board.appendChild(theme);
     });
+    if (guessesLeft === 0 && foundGroups.length < 4) {
+      const failMsg = document.createElement("div");
+      failMsg.style.margin = "1.5em 0 0.5em 0";
+      failMsg.style.fontWeight = "bold";
+      failMsg.style.color = "#ffe8cc";
+      failMsg.textContent = "Oh no! Better luck next year.";
+      board.appendChild(failMsg);
+    }
     return;
   }
   solvedGroups.forEach(group => {
@@ -207,7 +222,9 @@ style.innerHTML = `
 .connections-summary-theme {
   font-size: 0.98em;
   opacity: 0.85;
-  margin-bottom: 0.1em;
+  margin-bottom: 1.2em;
+  margin-top: 0.2em;
+  text-align: center;
 }
 `;
 document.head.appendChild(style);

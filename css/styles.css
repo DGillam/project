@@ -82,9 +82,9 @@ h1 {
 }
 
 .connection-tile.selected {
-  border: 2px solid #ffe066;
-  background: #7be07b;
-  color: #1d3b1d;
+  border: 2px solid #bbb;
+  background: #444;
+  color: #fff;
 }
 
 .tile.correct, .connection-tile.cat-green {
