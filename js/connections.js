@@ -40,7 +40,7 @@ function shuffle(array) {
   return array;
 }
 
-function renderBoard() {
+function renderBoard(doShuffle = false) {
   // Show solved groups at the top
   board.innerHTML = "";
   solvedGroups.forEach(group => {
@@ -58,9 +58,9 @@ function renderBoard() {
 
   // Remaining words
   const solvedWords = solvedGroups.flatMap(g => g.words);
-  const words = connectionsData.categories.flatMap(cat => cat.words)
+  let words = connectionsData.categories.flatMap(cat => cat.words)
     .filter(word => !solvedWords.includes(word));
-  shuffle(words);
+  if (doShuffle) shuffle(words);
 
   const grid = document.createElement("div");
   grid.className = "connections-grid";
@@ -96,7 +96,7 @@ function checkGuess() {
   if (match) {
     foundGroups.push(match.name);
     solvedGroups.push({ words: match.words, color: match.color });
-    message.innerHTML = `✅ Group found: <strong>${match.name}</strong>`;
+    message.innerHTML = `Group found: <strong>${match.name}</strong>`;
     selectedWords = [];
     setTimeout(() => {
       renderBoard();
@@ -107,7 +107,7 @@ function checkGuess() {
   } else {
     guessesLeft--;
     highlightGroup("incorrect", selectedWords);
-    message.innerHTML = `❌ Nope! Tries left: ${guessesLeft}`;
+    message.innerHTML = `Nope! Mistakes left: ${guessesLeft}`;
     setTimeout(() => {
       clearIncorrectHighlight(selectedWords);
       selectedWords = [];
@@ -139,7 +139,8 @@ function clearIncorrectHighlight(words) {
 }
 
 function updateLives() {
-  lives.innerHTML = "❤️ ".repeat(guessesLeft);
+  const seals = "🦭 ".repeat(guessesLeft);
+  lives.innerHTML = `<span style="font-size:1.2em;">Mistakes remaining: ${seals}</span>`;
 }
 
 function endGame() {
@@ -151,6 +152,21 @@ function endGame() {
   const tiles = document.querySelectorAll(".connection-tile");
   tiles.forEach(tile => tile.disabled = true);
 }
+
+document.getElementById("shuffle-btn").onclick = () => {
+  renderBoard(true); // pass true to shuffle
+};
+document.getElementById("deselect-btn").onclick = () => {
+  selectedWords = [];
+  renderBoard(false);
+};
+document.getElementById("submit-btn").onclick = () => {
+  if (selectedWords.length === 4) {
+    checkGuess();
+  } else {
+    message.innerHTML = "Select 4 tiles before submitting.";
+  }
+};
 
 renderBoard();
 updateLives();

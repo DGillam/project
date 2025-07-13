@@ -13,25 +13,24 @@
     #connections-lives {
       font-size: 1.5rem;
     }
+    .connections-controls {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 2rem;
+    }
   </style>
 </head>
 <body>
-  <h1>Seal Connections 🦭</h1>
+  <h1 style="text-align:left; margin-left:20px;">Seal Connections</h1>
   <div id="connections-lives"></div>
-  <div id="connections-board">
-    <!-- solved groups as .connections-row -->
-    <div class="connections-row"> ... </div>
-    <!-- unsolved grid -->
-    <div class="connections-grid">
-      <button class="connection-tile">Word1</button>
-      <button class="connection-tile">Word2</button>
-      <button class="connection-tile">Word3</button>
-      <button class="connection-tile">Word4</button>
-      <!-- etc -->
-    </div>
-  </div>
+  <div id="connections-board"></div>
   <div id="connections-message"></div>
-
+  <div class="connections-controls">
+    <button id="shuffle-btn" class="game-btn">Shuffle</button>
+    <button id="deselect-btn" class="game-btn">Deselect All</button>
+    <button id="submit-btn" class="game-btn">Submit</button>
+  </div>
   <script src="js/connections.js"></script>
 </body>
 </html>
