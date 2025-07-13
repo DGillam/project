@@ -19,17 +19,30 @@
       justify-content: center;
       margin-top: 2rem;
     }
+    .connections-container {
+      max-width: 500px;
+      margin: 40px auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      text-align: center;
+      margin: 0 0 1.5rem 0;
+    }
   </style>
 </head>
 <body>
-  <h1 style="text-align:left; margin-left:20px;">Seal Connections</h1>
-  <div id="connections-lives"></div>
-  <div id="connections-board"></div>
-  <div id="connections-message"></div>
-  <div class="connections-controls">
-    <button id="shuffle-btn" class="game-btn">Shuffle</button>
-    <button id="deselect-btn" class="game-btn">Deselect All</button>
-    <button id="submit-btn" class="game-btn">Submit</button>
+  <div class="connections-container">
+    <h1>Connections</h1>
+    <div id="connections-board"></div>
+    <div id="connections-lives"></div>
+    <div id="connections-message"></div>
+    <div class="connections-controls">
+      <button id="shuffle-btn" class="game-btn">Shuffle</button>
+      <button id="deselect-btn" class="game-btn">Deselect All</button>
+      <button id="submit-btn" class="game-btn">Submit</button>
+    </div>
   </div>
   <script src="js/connections.js"></script>
 </body>

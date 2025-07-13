@@ -83,7 +83,7 @@ function toggleWord(word, btn) {
     if (selectedWords.length === 4) return;
     selectedWords.push(word);
     btn.classList.add("selected");
-    if (selectedWords.length === 4) checkGuess();
+    // Do not auto-submit; wait for submit button
   }
 }
 
