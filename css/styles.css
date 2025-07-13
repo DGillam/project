@@ -75,6 +75,19 @@ h1 {
   color: #2e1a3a !important;
   border: 2px solid #b980f7 !important;
 }
+.connection-tile {
+  min-width: 80px;
+  padding: 0.8rem 0.5rem;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  margin: 2px;
+  cursor: pointer;
+  border: none;
+  background: #a0452e;
+  color: #fffdfc;
+  transition: background 0.2s, transform 0.2s;
+  text-align: center;
+}
 .connection-tile.incorrect {
   background: #a0452e !important;
   color: #fff !important;
