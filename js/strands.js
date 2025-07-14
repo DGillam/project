@@ -56,7 +56,16 @@ function renderGrid() {
       tile.className = "strands-tile";
       tile.textContent = gridLetters[r][c];
       tile.onclick = () => selectTile(r, c, tile);
-      if (selected.some(([sr, sc]) => sr === r && sc === c)) tile.classList.add("selected");
+      // Add selection circle for selected tiles
+      const selIdx = selected.findIndex(([sr, sc]) => sr === r && sc === c);
+      if (selIdx !== -1) {
+        tile.classList.add("selected");
+        // Add a visible circle with number for order
+        const circle = document.createElement('span');
+        circle.className = 'strands-tile-circle';
+        circle.textContent = selIdx + 1;
+        tile.appendChild(circle);
+      }
       foundWords.forEach(wordObj => {
         if (wordObj.positions && wordObj.positions.some(([wr, wc]) => wr === r && wc === c)) {
           if (wordObj.type === 'theme') tile.classList.add('found', 'theme');
@@ -346,6 +355,26 @@ style.innerHTML = `
   .strands-tile {
     font-size: 1rem;
   }
+}
+.strands-tile-circle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 1.4em;
+  height: 1.4em;
+  border-radius: 50%;
+  background: #fff5e1 !important;
+  color: #222;
+  font-size: 1em;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  box-shadow: 0 1px 4px #a0452e22;
+  border: 2px solid #e3cfa1;
+  pointer-events: none;
 }
 `;
 document.head.appendChild(style);
