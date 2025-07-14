@@ -55,23 +55,8 @@ function renderGrid() {
       const tile = document.createElement("div");
       tile.className = "strands-tile";
       tile.textContent = gridLetters[r][c];
-      tile.onclick = () => {
-        if (selected.length > 0 && selected[selected.length-1][0] === r && selected[selected.length-1][1] === c) {
-          // Submit word if last letter clicked again
-          submitSelection();
-        } else {
-          const idx = selected.findIndex(([sr, sc]) => sr === r && sc === c);
-          if (idx !== -1) {
-            selected.splice(idx, 1);
-          } else if (selected.length === 0 || isAdjacent(selected[selected.length-1], [r, c])) {
-            selected.push([r, c]);
-          }
-          selectionState = 'selecting';
-          renderGrid();
-        }
-      };
+      tile.onclick = () => selectTile(r, c, tile);
       if (selected.some(([sr, sc]) => sr === r && sc === c)) tile.classList.add("selected");
-      // Found words styling
       foundWords.forEach(wordObj => {
         if (wordObj.positions && wordObj.positions.some(([wr, wc]) => wr === r && wc === c)) {
           if (wordObj.type === 'theme') tile.classList.add('found', 'theme');
@@ -170,14 +155,34 @@ function updateWordCount() {
 }
 
 function selectTile(r, c, tile) {
-  // Allow diagonal and all adjacent selection
-  if (selected.length === 0 || isAdjacent(selected[selected.length-1], [r, c])) {
-    if (!selected.some(([sr, sc]) => sr === r && sc === c)) {
-      selected.push([r, c]);
-      renderGrid();
-      checkSelection();
-    }
+  if (selected.length > 0 && selected[selected.length-1][0] === r && selected[selected.length-1][1] === c) {
+    // Submit word if last letter clicked again
+    submitSelection();
+    return;
   }
+  const idx = selected.findIndex(([sr, sc]) => sr === r && sc === c);
+  if (idx !== -1) {
+    // Only allow deselection (backtracking) of the last selected tile
+    if (idx === selected.length - 1) {
+      selected.pop();
+    } else {
+      // Invalid move: trying to deselect a non-last tile, show shake feedback
+      selectionState = 'invalid';
+      renderGrid();
+      setTimeout(() => { selectionState = 'idle'; renderGrid(); }, 400);
+      return;
+    }
+  } else if (selected.length === 0 || isAdjacent(selected[selected.length-1], [r, c])) {
+    selected.push([r, c]);
+  } else {
+    // Invalid move: trying to select a non-adjacent tile, show shake feedback
+    selectionState = 'invalid';
+    renderGrid();
+    setTimeout(() => { selectionState = 'idle'; renderGrid(); }, 400);
+    return;
+  }
+  selectionState = 'selecting';
+  renderGrid();
 }
 
 function isAdjacent([r1, c1], [r2, c2]) {
