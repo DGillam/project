@@ -299,7 +299,12 @@ style.innerHTML = `
   transition: color 0.2s;
 }
 .strands-tile.selected,
-.strands-tile.found {
+.strands-tile.found,
+.strands-tile.selected.found,
+.strands-tile.selected.theme,
+.strands-tile.selected.spangram,
+.strands-tile.found.theme,
+.strands-tile.found.spangram {
   color: #222 !important;
 }
 .strands-tile.selected::before,
