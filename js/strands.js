@@ -41,15 +41,57 @@ strandsContainer.insertBefore(wordCount, document.getElementById('strands-grid')
 
 function renderGrid() {
   grid.innerHTML = "";
+  // Remove old lines
+  const oldLines = document.querySelectorAll('.strands-connection-line');
+  oldLines.forEach(line => line.remove());
+  // Render tiles
   for (let r = 0; r < 8; r++) {
     for (let c = 0; c < 8; c++) {
       const tile = document.createElement("div");
       tile.className = "strands-tile";
       tile.textContent = gridLetters[r][c];
-      tile.onclick = () => selectTile(r, c, tile);
+      tile.onclick = () => {
+        const idx = selected.findIndex(([sr, sc]) => sr === r && sc === c);
+        if (idx !== -1) {
+          // Deselect if already selected
+          selected.splice(idx, 1);
+        } else if (selected.length === 0 || isAdjacent(selected[selected.length-1], [r, c])) {
+          selected.push([r, c]);
+        }
+        renderGrid();
+        checkSelection();
+      };
       if (selected.some(([sr, sc]) => sr === r && sc === c)) tile.classList.add("selected");
       if (foundWords.some(word => word.positions && word.positions.some(([wr, wc]) => wr === r && wc === c))) tile.classList.add("found");
       grid.appendChild(tile);
+    }
+  }
+  // Draw connection lines between selected tiles
+  if (selected.length > 1) {
+    for (let i = 0; i < selected.length - 1; i++) {
+      const [r1, c1] = selected[i];
+      const [r2, c2] = selected[i+1];
+      const tile1 = grid.children[r1*8 + c1];
+      const tile2 = grid.children[r2*8 + c2];
+      if (tile1 && tile2) {
+        const rect1 = tile1.getBoundingClientRect();
+        const rect2 = tile2.getBoundingClientRect();
+        const gridRect = grid.getBoundingClientRect();
+        const x1 = rect1.left + rect1.width/2 - gridRect.left;
+        const y1 = rect1.top + rect1.height/2 - gridRect.top;
+        const x2 = rect2.left + rect2.width/2 - gridRect.left;
+        const y2 = rect2.top + rect2.height/2 - gridRect.top;
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svg.classList.add("strands-connection-line");
+        svg.style.left = "0";
+        svg.style.top = "0";
+        svg.style.width = "100%";
+        svg.style.height = "100%";
+        svg.style.position = "absolute";
+        svg.style.zIndex = "1";
+        svg.innerHTML = `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#4fc3f7" stroke-width="6" stroke-linecap="round" />`;
+        grid.appendChild(svg);
+      }
     }
   }
 }
@@ -125,35 +167,68 @@ style.innerHTML = `
 }
 .strands-grid {
   background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-  padding: 1em 0.5em;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  padding: 2em 1.5em;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(8, 1fr);
-  gap: 0.2em;
-  width: 340px;
-  height: 340px;
+  gap: 0.3em;
+  width: 480px;
+  height: 480px;
   margin: 0 auto;
+  position: relative;
 }
 .strands-tile {
   background: transparent;
   color: #222;
   border: none;
-  font-size: 1.3rem;
+  font-size: 2rem;
   font-family: inherit;
   font-weight: 500;
   transition: background 0.2s, color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
 }
 .strands-tile.selected {
-  background: #ffe066;
-  color: #4a1c1c;
-  border-radius: 10px;
+  background: none;
+  color: #fff;
+}
+.strands-tile.selected::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 2.2em;
+  height: 2.2em;
+  background: #4fc3f7;
+  border-radius: 50%;
+  z-index: -1;
 }
 .strands-tile.found {
+  background: none;
+  color: #fff;
+}
+.strands-tile.found::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 2.2em;
+  height: 2.2em;
   background: #7be07b;
-  color: #1d3b1d;
-  border-radius: 10px;
+  border-radius: 50%;
+  z-index: -1;
+}
+.strands-connection-line {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
 }
 `;
 document.head.appendChild(style);
