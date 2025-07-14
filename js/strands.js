@@ -128,6 +128,13 @@ style.innerHTML = `
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.04);
   padding: 1em 0.5em;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  gap: 0.2em;
+  width: 340px;
+  height: 340px;
+  margin: 0 auto;
 }
 .strands-tile {
   background: transparent;
