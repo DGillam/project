@@ -283,12 +283,7 @@ style.innerHTML = `
   padding: 0;
 }
 .strands-tile {
-  width: 100%;
-  height: 100%;
-  background: none !important;
-  border: none !important;
-  box-shadow: none !important;
-  color: #222;
+  color: #fff5e1;
   font-size: 1.7rem;
   font-family: inherit;
   font-weight: 500;
@@ -300,7 +295,6 @@ style.innerHTML = `
   min-width: 0;
   min-height: 0;
   box-sizing: border-box;
-  color: #fff5e1;
   transition: color 0.2s;
 }
 .strands-tile.selected,
@@ -311,7 +305,6 @@ style.innerHTML = `
 .strands-tile.found.theme,
 .strands-tile.found.spangram {
   color: #222 !important;
-  z-index: 2;
 }
 .strands-tile.selected::before,
 .strands-tile.found::before {
@@ -325,14 +318,10 @@ style.innerHTML = `
   border-radius: 50%;
   background: #fff5e1 !important;
   border: 2px solid #e3cfa1;
-  z-index: 1;
+  z-index: 0;
   box-shadow: 0 1px 6px #a0452e22;
   pointer-events: none;
   display: block;
-}
-.strands-tile > * {
-  position: relative;
-  z-index: 2;
 }
 .strands-tile.selected.found.theme::before,
 .strands-tile.found.theme::before {
@@ -345,7 +334,11 @@ style.innerHTML = `
   border-color: #fff9c4 !important;
 }
 .strands-tile.selected {
-  z-index: 3;
+  z-index: 2;
+}
+.strands-tile span, .strands-tile strong, .strands-tile em {
+  position: relative;
+  z-index: 2;
 }
 .strands-connection-line {
   position: absolute;
