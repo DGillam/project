@@ -56,14 +56,13 @@ function renderGrid() {
       tile.className = "strands-tile";
       tile.textContent = gridLetters[r][c];
       tile.onclick = () => selectTile(r, c, tile);
-      // Add selection circle for selected tiles
+      // Add selection circle for selected tiles (no number)
       const selIdx = selected.findIndex(([sr, sc]) => sr === r && sc === c);
       if (selIdx !== -1) {
         tile.classList.add("selected");
-        // Add a visible circle with number for order
+        // Add a visible circle (no number)
         const circle = document.createElement('span');
         circle.className = 'strands-tile-circle';
-        circle.textContent = selIdx + 1;
         tile.appendChild(circle);
       }
       foundWords.forEach(wordObj => {
@@ -365,16 +364,11 @@ style.innerHTML = `
   height: 1.4em;
   border-radius: 50%;
   background: #fff5e1 !important;
-  color: #222;
-  font-size: 1em;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 3;
-  box-shadow: 0 1px 4px #a0452e22;
   border: 2px solid #e3cfa1;
+  z-index: 3;
   pointer-events: none;
+  display: block;
+  box-shadow: 0 1px 4px #a0452e22;
 }
 `;
 document.head.appendChild(style);
