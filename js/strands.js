@@ -27,8 +27,8 @@ const strandsContainer = document.querySelector('.strands-container');
 const themeBox = document.createElement('div');
 themeBox.className = 'strands-theme-box';
 themeBox.innerHTML = `
-  <div class="strands-theme-label">TODAY'S THEME</div>
-  <div class="strands-theme-text"><strong>Mathieu through the years</strong></div>
+  <div class="strands-theme-label" style="text-align:center;">TODAY'S THEME</div>
+  <div class="strands-theme-text" style="text-align:center;"><strong>Mathieu through the years</strong></div>
 `;
 strandsContainer.insertBefore(themeBox, strandsContainer.firstChild.nextSibling);
 
@@ -48,12 +48,14 @@ if (!liveWordDisplay) {
   liveWordDisplay.style.fontSize = '1.3em';
   liveWordDisplay.style.margin = '0.7em 0 0.7em 0';
   liveWordDisplay.style.color = '#222';
+  liveWordDisplay.style.height = '2em'; // Prevent grid shifting
+  liveWordDisplay.style.display = 'flex';
+  liveWordDisplay.style.alignItems = 'center';
+  liveWordDisplay.style.justifyContent = 'center';
   strandsContainer.insertBefore(liveWordDisplay, grid);
 }
 
-// Update word count and live word display color to match the title
-wordCount.style.color = '#a0452e';
-liveWordDisplay.style.color = '#a0452e';
+let lastFoundWord = '';
 
 function renderGrid() {
   grid.innerHTML = "";
@@ -92,7 +94,14 @@ function renderGrid() {
   });
   // Update live word display
   const liveWord = selected.map(([r, c]) => gridLetters[r][c]).join('');
-  liveWordDisplay.textContent = liveWord ? liveWord : '';
+  if (liveWord) {
+    liveWordDisplay.textContent = liveWord;
+    lastFoundWord = '';
+  } else if (lastFoundWord) {
+    liveWordDisplay.textContent = lastFoundWord;
+  } else {
+    liveWordDisplay.textContent = '';
+  }
 }
 
 function drawConnectionLines(positions, color) {
@@ -149,7 +158,9 @@ function checkSelection() {
   const word = selected.map(([r, c]) => gridLetters[r][c]).join('');
   if (themeWords.includes(word) && !foundWords.some(w => w.word === word)) {
     foundWords.push({word, positions: [...selected]});
-    message.textContent = `Found: ${word}`;
+    // Remove message for found word
+    message.textContent = '';
+    lastFoundWord = word;
     selected = [];
     renderGrid();
     updateWordCount();
@@ -158,6 +169,7 @@ function checkSelection() {
     }
   } else if (word === spangram && selected.length === 9) {
     message.textContent = "You found the spangram!";
+    lastFoundWord = word;
     selected = [];
     renderGrid();
   }
@@ -165,7 +177,7 @@ function checkSelection() {
 
 renderGrid();
 
-// Add CSS for theme box and word count
+// Update CSS for centering
 const style = document.createElement('style');
 style.innerHTML = `
 .strands-theme-box {
@@ -174,9 +186,11 @@ style.innerHTML = `
   padding: 0.7em 1.2em 0.9em 1.2em;
   margin-bottom: 1.2em;
   box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-  text-align: left;
+  text-align: center;
   width: 100%;
   max-width: 340px;
+  margin-left: auto;
+  margin-right: auto;
 }
 .strands-theme-label {
   color: #2a4d5b;
@@ -184,34 +198,42 @@ style.innerHTML = `
   font-weight: bold;
   letter-spacing: 0.04em;
   margin-bottom: 0.3em;
+  text-align: center;
 }
 .strands-theme-text {
   font-size: 1.2em;
   color: #222;
+  text-align: center;
 }
 #strands-word-count {
-  color: #ffd700 !important;
+  color: #fff5e1 !important;
   text-align: left;
   margin-left: 0.2em;
   font-weight: bold;
   text-shadow: 0 1px 4px #a0452e;
 }
 #strands-live-word {
-  color: #ffd700 !important;
+  color: #fff5e1 !important;
   font-weight: bold;
   text-shadow: 0 1px 4px #a0452e;
+  height: 2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .strands-grid {
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 2px 12px rgba(0,0,0,0.07);
-  padding: 1.2em 1.2em;
+  padding: 1em 0.5em;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(8, 1fr);
-  gap: 0.25em;
-  width: 400px;
-  height: 400px;
+  gap: 0.18em;
+  width: 90vw;
+  max-width: 400px;
+  height: 90vw;
+  max-height: 400px;
   margin: 0 auto;
   position: relative;
 }
@@ -264,18 +286,19 @@ style.innerHTML = `
   pointer-events: none;
   z-index: 1;
 }
-@media (max-width: 500px) {
+@media (max-width: 600px) {
   .strands-grid {
     width: 98vw;
     height: 98vw;
-    min-width: 220px;
-    min-height: 220px;
     max-width: 98vw;
     max-height: 98vw;
-    padding: 0.5em 0.5em;
+    min-width: 220px;
+    min-height: 220px;
+    padding: 0.3em 0.1em;
   }
   .strands-theme-box {
     max-width: 98vw;
+    width: 98vw;
     font-size: 0.9em;
     padding: 0.5em 0.5em 0.7em 0.5em;
   }
@@ -283,7 +306,7 @@ style.innerHTML = `
     font-size: 1em;
   }
   .strands-tile {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
   #strands-word-count {
     font-size: 1em;
