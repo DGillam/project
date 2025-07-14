@@ -33,7 +33,7 @@
       background: none !important;
       border: none !important;
       box-shadow: none !important;
-      color: #222;
+      color: #fff5e1;
       font-size: 1.7rem;
       font-family: inherit;
       font-weight: 500;
@@ -44,48 +44,51 @@
       user-select: none;
       border-radius: 0;
       transition: color 0.2s;
+      position: relative;
+      z-index: 1;
     }
     /* Remove selected/found backgrounds from HTML, JS will handle circles/lines */
     .strands-tile.selected,
     .strands-tile.found {
-      background: none !important;
       color: #222 !important;
-      border: none !important;
+      z-index: 2;
+    }
+    .strands-tile.selected::before,
+    .strands-tile.found::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 1.3em;
+      height: 1.3em;
+      border-radius: 50%;
+      background: #fff5e1 !important;
+      border: 2px solid #e3cfa1;
+      z-index: 0;
+      box-shadow: 0 1px 6px #a0452e22;
+      pointer-events: none;
+      display: block;
+    }
+    .strands-tile.selected.found::before,
+    .strands-tile.found.theme::before {
+      background: #b3e5fc !important;
+      border-color: #b3e5fc !important;
+    }
+    .strands-tile.selected.found.spangram::before,
+    .strands-tile.found.spangram::before {
+      background: #fff9c4 !important;
+      border-color: #fff9c4 !important;
+    }
+    .strands-tile > * {
+      position: relative;
+      z-index: 2;
     }
     #strands-message {
       min-height: 2em;
       margin-bottom: 1.5rem;
       color: #ffe8cc;
       font-size: 1.1rem;
-    }
-    .strands-tile.selected::before {
-      content: '';
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: 2.1em;
-      height: 2.1em;
-      border-radius: 50%;
-      background: #fff5e1 !important;
-      border: 2.5px solid #e3cfa1;
-      z-index: 1;
-      box-shadow: 0 1px 8px #a0452e22;
-      pointer-events: none;
-      display: block;
-    }
-    .strands-tile.selected {
-      z-index: 3;
-      color: #222 !important;
-    }
-    /* Ensure .strands-tile.selected::before is not overridden by .strands-tile.selected or .strands-tile.found */
-    .strands-tile.selected.found::before {
-      background: #b3e5fc !important;
-      border-color: #b3e5fc !important;
-    }
-    .strands-tile.selected.found.spangram::before {
-      background: #fff9c4 !important;
-      border-color: #fff9c4 !important;
     }
   </style>
 </head>
