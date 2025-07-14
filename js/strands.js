@@ -190,12 +190,16 @@ style.innerHTML = `
   color: #222;
 }
 #strands-word-count {
-  color: #a0452e;
+  color: #ffd700 !important;
   text-align: left;
   margin-left: 0.2em;
+  font-weight: bold;
+  text-shadow: 0 1px 4px #a0452e;
 }
 #strands-live-word {
-  color: #a0452e;
+  color: #ffd700 !important;
+  font-weight: bold;
+  text-shadow: 0 1px 4px #a0452e;
 }
 .strands-grid {
   background: #fff;
@@ -212,18 +216,22 @@ style.innerHTML = `
   position: relative;
 }
 .strands-tile {
-  background: transparent;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
   color: #222;
-  border: none;
   font-size: 1.7rem;
   font-family: inherit;
   font-weight: 500;
-  transition: background 0.2s, color 0.2s;
+  transition: color 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   z-index: 2;
+  min-width: 0;
+  min-height: 0;
+  box-sizing: border-box;
 }
 .strands-tile.selected {
   background: none !important;
