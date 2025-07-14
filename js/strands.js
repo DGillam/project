@@ -1,20 +1,20 @@
-// 8x8 grid using all theme words and spangram, row by row
+// 8x8 grid with words placed in a twisty, Strands-like fashion, allowing diagonal connections
 const themeWords = [
   "TEACHER", "MUSICIAN", "CHEF", "ENTREPRENEUR", "BAROWNER", "CONSULTANT", "THIRTYSIX", "LAWYER"
 ];
 const spangram = "THIRTYSIX";
 
-// Concatenate all words into a single string
-const allLetters = themeWords.join("").toUpperCase();
-
-// Build 8x8 grid
-const gridLetters = [];
-for (let r = 0; r < 8; r++) {
-  gridLetters.push([]);
-  for (let c = 0; c < 8; c++) {
-    gridLetters[r].push(allLetters[r * 8 + c]);
-  }
-}
+// Twisty grid: words are hidden in various directions, spangram is unique
+const gridLetters = [
+  ['T','H','I','R','T','Y','S','I'],
+  ['E','N','T','R','E','P','R','E'],
+  ['A','C','H','E','F','O','W','N'],
+  ['C','O','N','S','U','L','T','A'],
+  ['H','B','A','R','O','W','N','E'],
+  ['E','R','L','A','W','Y','E','R'],
+  ['M','U','S','I','C','I','A','N'],
+  ['X','T','H','I','R','T','Y','S']
+];
 
 const foundWords = [];
 let selected = [];
@@ -38,7 +38,7 @@ function renderGrid() {
 }
 
 function selectTile(r, c, tile) {
-  // Only allow adjacent selection
+  // Allow diagonal and all adjacent selection
   if (selected.length === 0 || isAdjacent(selected[selected.length-1], [r, c])) {
     if (!selected.some(([sr, sc]) => sr === r && sc === c)) {
       selected.push([r, c]);
@@ -62,7 +62,7 @@ function checkSelection() {
     if (foundWords.length === themeWords.length) {
       message.textContent = "You found all the theme words!";
     }
-  } else if (word === spangram) {
+  } else if (word === spangram && selected.length === 9) {
     message.textContent = "You found the spangram!";
     selected = [];
     renderGrid();
