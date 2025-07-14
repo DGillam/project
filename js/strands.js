@@ -201,13 +201,13 @@ style.innerHTML = `
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 2px 12px rgba(0,0,0,0.07);
-  padding: 1em 0.5em;
+  padding: 1.2em 1.2em;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(8, 1fr);
-  gap: 0.18em;
-  width: 320px;
-  height: 320px;
+  gap: 0.25em;
+  width: 400px;
+  height: 400px;
   margin: 0 auto;
   position: relative;
 }
@@ -215,7 +215,7 @@ style.innerHTML = `
   background: transparent;
   color: #222;
   border: none;
-  font-size: 1.1rem;
+  font-size: 1.7rem;
   font-family: inherit;
   font-weight: 500;
   transition: background 0.2s, color 0.2s;
@@ -264,7 +264,7 @@ style.innerHTML = `
     min-height: 220px;
     max-width: 98vw;
     max-height: 98vw;
-    padding: 0.3em 0.1em;
+    padding: 0.5em 0.5em;
   }
   .strands-theme-box {
     max-width: 98vw;
@@ -275,7 +275,7 @@ style.innerHTML = `
     font-size: 1em;
   }
   .strands-tile {
-    font-size: 0.8rem;
+    font-size: 1.1rem;
   }
   #strands-word-count {
     font-size: 1em;
