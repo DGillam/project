@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Strands – For Seal</title>
   <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/strands-debug.css" />
   <style>
     .strands-container {
       max-width: 500px;
@@ -56,6 +57,35 @@
       margin-bottom: 1.5rem;
       color: #ffe8cc;
       font-size: 1.1rem;
+    }
+    .strands-tile.selected::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 2.1em;
+      height: 2.1em;
+      border-radius: 50%;
+      background: #fff5e1 !important;
+      border: 2.5px solid #e3cfa1;
+      z-index: 1;
+      box-shadow: 0 1px 8px #a0452e22;
+      pointer-events: none;
+      display: block;
+    }
+    .strands-tile.selected {
+      z-index: 3;
+      color: #222 !important;
+    }
+    /* Ensure .strands-tile.selected::before is not overridden by .strands-tile.selected or .strands-tile.found */
+    .strands-tile.selected.found::before {
+      background: #b3e5fc !important;
+      border-color: #b3e5fc !important;
+    }
+    .strands-tile.selected.found.spangram::before {
+      background: #fff9c4 !important;
+      border-color: #fff9c4 !important;
     }
   </style>
 </head>

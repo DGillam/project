@@ -44,6 +44,20 @@ let lastFoundWord = '';
 let selectionState = 'idle'; // idle, selecting, submitted, invalid
 let lastSelected = null;
 
+// Fix: Ensure liveWordDisplay is defined
+let liveWordDisplay = document.getElementById('strands-live-word');
+if (!liveWordDisplay) {
+  liveWordDisplay = document.createElement('div');
+  liveWordDisplay.id = 'strands-live-word';
+  liveWordDisplay.style.margin = '1em 0 0.5em 0';
+  liveWordDisplay.style.fontSize = '1.3em';
+  liveWordDisplay.style.fontWeight = 'bold';
+  liveWordDisplay.style.letterSpacing = '0.04em';
+  liveWordDisplay.style.textAlign = 'center';
+  liveWordDisplay.style.color = '#fff5e1';
+  strandsContainer.insertBefore(liveWordDisplay, grid);
+}
+
 function renderGrid() {
   grid.innerHTML = "";
   // Remove old lines
@@ -284,6 +298,7 @@ style.innerHTML = `
 }
 .strands-tile.selected {
   color: #222 !important;
+  z-index: 3;
 }
 .strands-tile.selected::before {
   content: '';
@@ -291,11 +306,13 @@ style.innerHTML = `
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 1.4em;
-  height: 1.4em;
+  width: 2.1em;
+  height: 2.1em;
   border-radius: 50%;
   background: #fff5e1 !important;
-  z-index: -1;
+  border: 2.5px solid #e3cfa1;
+  z-index: 1;
+  box-shadow: 0 1px 8px #a0452e22;
 }
 .strands-tile.found {
   color: #222 !important;
@@ -349,6 +366,10 @@ style.innerHTML = `
   }
   .strands-tile {
     font-size: 1rem;
+  }
+  .strands-tile.selected::before {
+    width: 1.4em;
+    height: 1.4em;
   }
 }
 `;
