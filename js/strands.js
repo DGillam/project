@@ -295,39 +295,42 @@ style.innerHTML = `
   min-width: 0;
   min-height: 0;
   box-sizing: border-box;
+  color: #fff5e1;
+  transition: color 0.2s;
 }
-.strands-tile.selected {
+.strands-tile.selected,
+.strands-tile.found {
   color: #222 !important;
-  z-index: 3;
 }
-.strands-tile.selected::before {
+.strands-tile.selected::before,
+.strands-tile.found::before {
   content: '';
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 2.1em;
-  height: 2.1em;
+  width: 1.3em;
+  height: 1.3em;
   border-radius: 50%;
   background: #fff5e1 !important;
-  border: 2.5px solid #e3cfa1;
+  border: 2px solid #e3cfa1;
   z-index: 1;
-  box-shadow: 0 1px 8px #a0452e22;
+  box-shadow: 0 1px 6px #a0452e22;
+  pointer-events: none;
+  display: block;
 }
-.strands-tile.found {
-  color: #222 !important;
-}
-.strands-tile.found.theme {
-  color: #222 !important;
-}
+.strands-tile.selected.found.theme::before,
 .strands-tile.found.theme::before {
   background: #b3e5fc !important;
+  border-color: #b3e5fc !important;
 }
-.strands-tile.found.spangram {
-  color: #222 !important;
-}
+.strands-tile.selected.found.spangram::before,
 .strands-tile.found.spangram::before {
   background: #fff9c4 !important;
+  border-color: #fff9c4 !important;
+}
+.strands-tile.selected {
+  z-index: 3;
 }
 .strands-connection-line {
   position: absolute;
