@@ -51,6 +51,10 @@ if (!liveWordDisplay) {
   strandsContainer.insertBefore(liveWordDisplay, grid);
 }
 
+// Update word count and live word display color to match the title
+wordCount.style.color = '#a0452e';
+liveWordDisplay.style.color = '#a0452e';
+
 function renderGrid() {
   grid.innerHTML = "";
   // Remove old lines
@@ -78,11 +82,24 @@ function renderGrid() {
       grid.appendChild(tile);
     }
   }
-  // Draw connection lines between selected tiles
-  if (selected.length > 1) {
-    for (let i = 0; i < selected.length - 1; i++) {
-      const [r1, c1] = selected[i];
-      const [r2, c2] = selected[i+1];
+  // Draw connection lines for selected tiles
+  drawConnectionLines(selected, '#4fc3f7');
+  // Draw connection lines for found words
+  foundWords.forEach(wordObj => {
+    if (wordObj.positions && wordObj.positions.length > 1) {
+      drawConnectionLines(wordObj.positions, '#7be07b');
+    }
+  });
+  // Update live word display
+  const liveWord = selected.map(([r, c]) => gridLetters[r][c]).join('');
+  liveWordDisplay.textContent = liveWord ? liveWord : '';
+}
+
+function drawConnectionLines(positions, color) {
+  if (positions.length > 1) {
+    for (let i = 0; i < positions.length - 1; i++) {
+      const [r1, c1] = positions[i];
+      const [r2, c2] = positions[i+1];
       const tile1 = grid.children[r1*8 + c1];
       const tile2 = grid.children[r2*8 + c2];
       if (tile1 && tile2) {
@@ -101,14 +118,11 @@ function renderGrid() {
         svg.style.height = "100%";
         svg.style.position = "absolute";
         svg.style.zIndex = "1";
-        svg.innerHTML = `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#4fc3f7" stroke-width="6" stroke-linecap="round" />`;
+        svg.innerHTML = `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" stroke-width="6" stroke-linecap="round" />`;
         grid.appendChild(svg);
       }
     }
   }
-  // Update live word display
-  const liveWord = selected.map(([r, c]) => gridLetters[r][c]).join('');
-  liveWordDisplay.textContent = liveWord ? liveWord : '';
 }
 
 // Update word count when a word is found
@@ -176,21 +190,24 @@ style.innerHTML = `
   color: #222;
 }
 #strands-word-count {
-  color: #222;
+  color: #a0452e;
   text-align: left;
   margin-left: 0.2em;
+}
+#strands-live-word {
+  color: #a0452e;
 }
 .strands-grid {
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 2px 12px rgba(0,0,0,0.07);
-  padding: 2em 1.5em;
+  padding: 1em 0.5em;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(8, 1fr);
-  gap: 0.3em;
-  width: 480px;
-  height: 480px;
+  gap: 0.18em;
+  width: 320px;
+  height: 320px;
   margin: 0 auto;
   position: relative;
 }
@@ -198,7 +215,7 @@ style.innerHTML = `
   background: transparent;
   color: #222;
   border: none;
-  font-size: 2rem;
+  font-size: 1.2rem;
   font-family: inherit;
   font-weight: 500;
   transition: background 0.2s, color 0.2s;
@@ -209,7 +226,11 @@ style.innerHTML = `
   z-index: 2;
 }
 .strands-tile.selected {
-  background: none;
+  background: none !important;
+  color: #fff;
+}
+.strands-tile.found {
+  background: none !important;
   color: #fff;
 }
 .strands-tile.selected::before,
@@ -234,6 +255,31 @@ style.innerHTML = `
   position: absolute;
   pointer-events: none;
   z-index: 1;
+}
+@media (max-width: 500px) {
+  .strands-grid {
+    width: 98vw;
+    height: 98vw;
+    min-width: 220px;
+    min-height: 220px;
+    max-width: 98vw;
+    max-height: 98vw;
+    padding: 0.3em 0.1em;
+  }
+  .strands-theme-box {
+    max-width: 98vw;
+    font-size: 0.9em;
+    padding: 0.5em 0.5em 0.7em 0.5em;
+  }
+  #strands-live-word {
+    font-size: 1em;
+  }
+  .strands-tile {
+    font-size: 0.95rem;
+  }
+  #strands-word-count {
+    font-size: 1em;
+  }
 }
 `;
 document.head.appendChild(style);
