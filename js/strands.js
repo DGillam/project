@@ -215,7 +215,7 @@ style.innerHTML = `
   background: transparent;
   color: #222;
   border: none;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-family: inherit;
   font-weight: 500;
   transition: background 0.2s, color 0.2s;
@@ -275,7 +275,7 @@ style.innerHTML = `
     font-size: 1em;
   }
   .strands-tile {
-    font-size: 0.95rem;
+    font-size: 0.8rem;
   }
   #strands-word-count {
     font-size: 1em;
