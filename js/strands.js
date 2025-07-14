@@ -255,6 +255,8 @@ style.innerHTML = `
   padding: 0;
 }
 .strands-tile {
+  width: 100%;
+  height: 100%;
   background: none !important;
   border: none !important;
   box-shadow: none !important;
@@ -270,13 +272,21 @@ style.innerHTML = `
   min-width: 0;
   min-height: 0;
   box-sizing: border-box;
-  /* Remove any tile-like appearance */
 }
 .strands-tile.selected {
   color: #222 !important;
 }
 .strands-tile.selected::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 1.4em;
+  height: 1.4em;
+  border-radius: 50%;
   background: #fff5e1 !important;
+  z-index: -1;
 }
 .strands-tile.found {
   color: #222 !important;
