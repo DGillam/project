@@ -39,6 +39,18 @@ wordCount.style.margin = '1.2em 0 1em 0';
 wordCount.innerHTML = `<strong>0 of 8</strong> theme words found.`;
 strandsContainer.insertBefore(wordCount, document.getElementById('strands-grid'));
 
+// --- JS: Live selected word display ---
+// Add live word display above grid
+let liveWordDisplay = document.getElementById('strands-live-word');
+if (!liveWordDisplay) {
+  liveWordDisplay = document.createElement('div');
+  liveWordDisplay.id = 'strands-live-word';
+  liveWordDisplay.style.fontSize = '1.3em';
+  liveWordDisplay.style.margin = '0.7em 0 0.7em 0';
+  liveWordDisplay.style.color = '#222';
+  strandsContainer.insertBefore(liveWordDisplay, grid);
+}
+
 function renderGrid() {
   grid.innerHTML = "";
   // Remove old lines
@@ -94,6 +106,9 @@ function renderGrid() {
       }
     }
   }
+  // Update live word display
+  const liveWord = selected.map(([r, c]) => gridLetters[r][c]).join('');
+  liveWordDisplay.textContent = liveWord ? liveWord : '';
 }
 
 // Update word count when a word is found
@@ -197,33 +212,23 @@ style.innerHTML = `
   background: none;
   color: #fff;
 }
-.strands-tile.selected::before {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 2.2em;
-  height: 2.2em;
-  background: #4fc3f7;
-  border-radius: 50%;
-  z-index: -1;
-}
-.strands-tile.found {
-  background: none;
-  color: #fff;
-}
+.strands-tile.selected::before,
 .strands-tile.found::before {
   content: '';
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 2.2em;
-  height: 2.2em;
-  background: #7be07b;
+  width: 1.4em;
+  height: 1.4em;
   border-radius: 50%;
   z-index: -1;
+}
+.strands-tile.selected::before {
+  background: #4fc3f7;
+}
+.strands-tile.found::before {
+  background: #7be07b;
 }
 .strands-connection-line {
   position: absolute;
