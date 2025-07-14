@@ -44,19 +44,24 @@ let lastFoundWord = '';
 let selectionState = 'idle'; // idle, selecting, submitted, invalid
 let lastSelected = null;
 
-// Fix: Ensure liveWordDisplay is defined
+// Fix: Prevent grid shifting by reserving space for the live word display
+// Add a fixed height to #strands-live-word
 let liveWordDisplay = document.getElementById('strands-live-word');
 if (!liveWordDisplay) {
   liveWordDisplay = document.createElement('div');
   liveWordDisplay.id = 'strands-live-word';
-  liveWordDisplay.style.margin = '1em 0 0.5em 0';
-  liveWordDisplay.style.fontSize = '1.3em';
-  liveWordDisplay.style.fontWeight = 'bold';
-  liveWordDisplay.style.letterSpacing = '0.04em';
-  liveWordDisplay.style.textAlign = 'center';
-  liveWordDisplay.style.color = '#fff5e1';
   strandsContainer.insertBefore(liveWordDisplay, grid);
 }
+liveWordDisplay.style.margin = '1em 0 0.5em 0';
+liveWordDisplay.style.fontSize = '1.3em';
+liveWordDisplay.style.fontWeight = 'bold';
+liveWordDisplay.style.letterSpacing = '0.04em';
+liveWordDisplay.style.textAlign = 'center';
+liveWordDisplay.style.color = '#fff5e1';
+liveWordDisplay.style.minHeight = '2.2em'; // Reserve space for 1-2 lines
+liveWordDisplay.style.display = 'flex';
+liveWordDisplay.style.alignItems = 'center';
+liveWordDisplay.style.justifyContent = 'center';
 
 function renderGrid() {
   grid.innerHTML = "";
