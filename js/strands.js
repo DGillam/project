@@ -296,7 +296,7 @@ style.innerHTML = `
   align-items: center;
   justify-content: center;
   position: relative;
-  z-index: 2;
+  z-index: 1;
   min-width: 0;
   min-height: 0;
   box-sizing: border-box;
@@ -311,6 +311,7 @@ style.innerHTML = `
 .strands-tile.found.theme,
 .strands-tile.found.spangram {
   color: #222 !important;
+  z-index: 2;
 }
 .strands-tile.selected::before,
 .strands-tile.found::before {
@@ -328,6 +329,10 @@ style.innerHTML = `
   box-shadow: 0 1px 6px #a0452e22;
   pointer-events: none;
   display: block;
+}
+.strands-tile > * {
+  position: relative;
+  z-index: 2;
 }
 .strands-tile.selected.found.theme::before,
 .strands-tile.found.theme::before {
