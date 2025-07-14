@@ -1,19 +1,19 @@
 // 8x8 grid with words placed in a twisty, Strands-like fashion, allowing diagonal connections
 const themeWords = [
-  "TEACHER", "MUSICIAN", "CHEF", "ENTREPRENEUR", "BAROWNER", "CONSULTANT", "THIRTYSIX", "LAWYER"
+  "TEACHER", "MUSICIAN", "CHEF", "ENTREPRENEUR", "BAROWNER", "CONSULTANT", "LAWYER"
 ];
 const spangram = "THIRTYSIX";
 
 // Twisty grid: words are hidden in various directions, spangram is unique
 const gridLetters = [
-  ['T','H','I','R','T','Y','S','I'],
-  ['E','N','T','R','E','P','R','E'],
-  ['A','C','H','E','F','O','W','N'],
-  ['C','O','N','S','U','L','T','A'],
-  ['H','B','A','R','O','W','N','E'],
-  ['E','R','L','A','W','Y','E','R'],
-  ['M','U','S','I','C','I','A','N'],
-  ['X','T','H','I','R','T','Y','S']
+  ['L','R','E','R','T','E','A','C'],
+  ['A','E','N','C','O','N','S','H'],
+  ['W','Y','W','O','T','L','U','E'],
+  ['T','H','B','A','R','A','N','R'],
+  ['E','I','R','T','Y','S','I','T'],
+  ['N','T','R','E','M','C','H','X'],
+  ['N','E','R','P','U','F','E','N'],
+  ['E','U','R','S','I','C','I','A']
 ];
 
 const foundWords = [];
@@ -21,6 +21,23 @@ let selected = [];
 
 const grid = document.getElementById("strands-grid");
 const message = document.getElementById("strands-message");
+
+// Add theme box and word count display
+const strandsContainer = document.querySelector('.strands-container');
+const themeBox = document.createElement('div');
+themeBox.className = 'strands-theme-box';
+themeBox.innerHTML = `
+  <div class="strands-theme-label">TODAY'S THEME</div>
+  <div class="strands-theme-text"><strong>Mathieu through the years</strong></div>
+`;
+strandsContainer.insertBefore(themeBox, strandsContainer.firstChild.nextSibling);
+
+const wordCount = document.createElement('div');
+wordCount.id = 'strands-word-count';
+wordCount.style.fontSize = '1.3em';
+wordCount.style.margin = '1.2em 0 1em 0';
+wordCount.innerHTML = `<strong>0 of 8</strong> theme words found.`;
+strandsContainer.insertBefore(wordCount, document.getElementById('strands-grid'));
 
 function renderGrid() {
   grid.innerHTML = "";
@@ -35,6 +52,11 @@ function renderGrid() {
       grid.appendChild(tile);
     }
   }
+}
+
+// Update word count when a word is found
+function updateWordCount() {
+  wordCount.innerHTML = `<strong>${foundWords.length} of 8</strong> theme words found.`;
 }
 
 function selectTile(r, c, tile) {
@@ -59,6 +81,7 @@ function checkSelection() {
     message.textContent = `Found: ${word}`;
     selected = [];
     renderGrid();
+    updateWordCount();
     if (foundWords.length === themeWords.length) {
       message.textContent = "You found all the theme words!";
     }
@@ -70,3 +93,60 @@ function checkSelection() {
 }
 
 renderGrid();
+
+// Add CSS for theme box and word count
+const style = document.createElement('style');
+style.innerHTML = `
+.strands-theme-box {
+  background: #e3f6fc;
+  border-radius: 12px;
+  padding: 0.7em 1.2em 0.9em 1.2em;
+  margin-bottom: 1.2em;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  text-align: left;
+  width: 100%;
+  max-width: 340px;
+}
+.strands-theme-label {
+  color: #2a4d5b;
+  font-size: 0.95em;
+  font-weight: bold;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.3em;
+}
+.strands-theme-text {
+  font-size: 1.2em;
+  color: #222;
+}
+#strands-word-count {
+  color: #222;
+  text-align: left;
+  margin-left: 0.2em;
+}
+.strands-grid {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  padding: 1em 0.5em;
+}
+.strands-tile {
+  background: transparent;
+  color: #222;
+  border: none;
+  font-size: 1.3rem;
+  font-family: inherit;
+  font-weight: 500;
+  transition: background 0.2s, color 0.2s;
+}
+.strands-tile.selected {
+  background: #ffe066;
+  color: #4a1c1c;
+  border-radius: 10px;
+}
+.strands-tile.found {
+  background: #7be07b;
+  color: #1d3b1d;
+  border-radius: 10px;
+}
+`;
+document.head.appendChild(style);
