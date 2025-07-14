@@ -60,10 +60,6 @@ function renderGrid() {
       const selIdx = selected.findIndex(([sr, sc]) => sr === r && sc === c);
       if (selIdx !== -1) {
         tile.classList.add("selected");
-        // Add a visible circle (no number)
-        const circle = document.createElement('span');
-        circle.className = 'strands-tile-circle';
-        tile.appendChild(circle);
       }
       foundWords.forEach(wordObj => {
         if (wordObj.positions && wordObj.positions.some(([wr, wc]) => wr === r && wc === c)) {
@@ -354,21 +350,6 @@ style.innerHTML = `
   .strands-tile {
     font-size: 1rem;
   }
-}
-.strands-tile-circle {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 1.4em;
-  height: 1.4em;
-  border-radius: 50%;
-  background: #fff5e1 !important;
-  border: 2px solid #e3cfa1;
-  z-index: 3;
-  pointer-events: none;
-  display: block;
-  box-shadow: 0 1px 4px #a0452e22;
 }
 `;
 document.head.appendChild(style);
