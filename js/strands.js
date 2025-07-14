@@ -39,23 +39,10 @@ wordCount.style.margin = '1.2em 0 1em 0';
 wordCount.innerHTML = `<strong>0 of 8</strong> theme words found.`;
 strandsContainer.insertBefore(wordCount, document.getElementById('strands-grid'));
 
-// --- JS: Live selected word display ---
-// Add live word display above grid
-let liveWordDisplay = document.getElementById('strands-live-word');
-if (!liveWordDisplay) {
-  liveWordDisplay = document.createElement('div');
-  liveWordDisplay.id = 'strands-live-word';
-  liveWordDisplay.style.fontSize = '1.3em';
-  liveWordDisplay.style.margin = '0.7em 0 0.7em 0';
-  liveWordDisplay.style.color = '#222';
-  liveWordDisplay.style.height = '2em'; // Prevent grid shifting
-  liveWordDisplay.style.display = 'flex';
-  liveWordDisplay.style.alignItems = 'center';
-  liveWordDisplay.style.justifyContent = 'center';
-  strandsContainer.insertBefore(liveWordDisplay, grid);
-}
-
+// --- JS: NYT-style selection and submission ---
 let lastFoundWord = '';
+let selectionState = 'idle'; // idle, selecting, submitted, invalid
+let lastSelected = null;
 
 function renderGrid() {
   grid.innerHTML = "";
@@ -69,31 +56,48 @@ function renderGrid() {
       tile.className = "strands-tile";
       tile.textContent = gridLetters[r][c];
       tile.onclick = () => {
-        const idx = selected.findIndex(([sr, sc]) => sr === r && sc === c);
-        if (idx !== -1) {
-          // Deselect if already selected
-          selected.splice(idx, 1);
-        } else if (selected.length === 0 || isAdjacent(selected[selected.length-1], [r, c])) {
-          selected.push([r, c]);
+        if (selected.length > 0 && selected[selected.length-1][0] === r && selected[selected.length-1][1] === c) {
+          // Submit word if last letter clicked again
+          submitSelection();
+        } else {
+          const idx = selected.findIndex(([sr, sc]) => sr === r && sc === c);
+          if (idx !== -1) {
+            selected.splice(idx, 1);
+          } else if (selected.length === 0 || isAdjacent(selected[selected.length-1], [r, c])) {
+            selected.push([r, c]);
+          }
+          selectionState = 'selecting';
+          renderGrid();
         }
-        renderGrid();
-        checkSelection();
       };
       if (selected.some(([sr, sc]) => sr === r && sc === c)) tile.classList.add("selected");
-      if (foundWords.some(word => word.positions && word.positions.some(([wr, wc]) => wr === r && wc === c))) tile.classList.add("found");
+      // Found words styling
+      foundWords.forEach(wordObj => {
+        if (wordObj.positions && wordObj.positions.some(([wr, wc]) => wr === r && wc === c)) {
+          if (wordObj.type === 'theme') tile.classList.add('found', 'theme');
+          if (wordObj.type === 'spangram') tile.classList.add('found', 'spangram');
+        }
+      });
       grid.appendChild(tile);
     }
   }
   // Draw connection lines for selected tiles
-  drawConnectionLines(selected, '#4fc3f7');
+  if (selected.length > 1 && selectionState === 'selecting') {
+    drawConnectionLines(selected, '#fff5e1', 'selected');
+  }
   // Draw connection lines for found words
   foundWords.forEach(wordObj => {
     if (wordObj.positions && wordObj.positions.length > 1) {
-      drawConnectionLines(wordObj.positions, '#7be07b');
+      if (wordObj.type === 'theme') drawConnectionLines(wordObj.positions, '#b3e5fc', 'theme');
+      if (wordObj.type === 'spangram') drawConnectionLines(wordObj.positions, '#fff9c4', 'spangram');
     }
   });
   // Update live word display
   const liveWord = selected.map(([r, c]) => gridLetters[r][c]).join('');
+  if (selectionState === 'invalid') {
+    liveWordDisplay.classList.add('shake');
+    setTimeout(() => liveWordDisplay.classList.remove('shake'), 400);
+  }
   if (liveWord) {
     liveWordDisplay.textContent = liveWord;
     lastFoundWord = '';
@@ -104,7 +108,7 @@ function renderGrid() {
   }
 }
 
-function drawConnectionLines(positions, color) {
+function drawConnectionLines(positions, color, type) {
   if (positions.length > 1) {
     for (let i = 0; i < positions.length - 1; i++) {
       const [r1, c1] = positions[i];
@@ -120,7 +124,7 @@ function drawConnectionLines(positions, color) {
         const x2 = rect2.left + rect2.width/2 - gridRect.left;
         const y2 = rect2.top + rect2.height/2 - gridRect.top;
         const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        svg.classList.add("strands-connection-line");
+        svg.classList.add("strands-connection-line", type);
         svg.style.left = "0";
         svg.style.top = "0";
         svg.style.width = "100%";
@@ -131,6 +135,32 @@ function drawConnectionLines(positions, color) {
         grid.appendChild(svg);
       }
     }
+  }
+}
+
+function submitSelection() {
+  const word = selected.map(([r, c]) => gridLetters[r][c]).join('');
+  if (themeWords.includes(word) && !foundWords.some(w => w.word === word)) {
+    foundWords.push({word, positions: [...selected], type: 'theme'});
+    lastFoundWord = word;
+    selected = [];
+    selectionState = 'submitted';
+    renderGrid();
+    updateWordCount();
+    if (foundWords.length === themeWords.length) {
+      message.textContent = "You found all the theme words!";
+    }
+  } else if (word === spangram && selected.length === 9 && !foundWords.some(w => w.word === word)) {
+    foundWords.push({word, positions: [...selected], type: 'spangram'});
+    lastFoundWord = word;
+    selected = [];
+    selectionState = 'submitted';
+    renderGrid();
+  } else {
+    selectionState = 'invalid';
+    selected = [];
+    renderGrid();
+    setTimeout(() => { selectionState = 'idle'; renderGrid(); }, 400);
   }
 }
 
@@ -205,37 +235,26 @@ style.innerHTML = `
   color: #222;
   text-align: center;
 }
-#strands-word-count {
-  color: #fff5e1 !important;
-  text-align: left;
-  margin-left: 0.2em;
-  font-weight: bold;
-  text-shadow: 0 1px 4px #a0452e;
-}
-#strands-live-word {
+#strands-word-count, #strands-live-word {
   color: #fff5e1 !important;
   font-weight: bold;
   text-shadow: 0 1px 4px #a0452e;
-  height: 2em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 .strands-grid {
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
-  padding: 1em 0.5em;
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  grid-template-rows: repeat(8, 1fr);
-  gap: 0.18em;
+  background: none !important;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+  margin: 0 auto;
+  position: relative;
   width: 90vw;
   max-width: 400px;
   height: 90vw;
   max-height: 400px;
-  margin: 0 auto;
-  position: relative;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  gap: 0.18em;
 }
 .strands-tile {
   background: none !important;
@@ -256,35 +275,50 @@ style.innerHTML = `
   box-sizing: border-box;
 }
 .strands-tile.selected {
-  background: none !important;
-  color: #fff;
-}
-.strands-tile.found {
-  background: none !important;
-  color: #fff;
-}
-.strands-tile.selected::before,
-.strands-tile.found::before {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 1.4em;
-  height: 1.4em;
-  border-radius: 50%;
-  z-index: -1;
+  color: #222 !important;
 }
 .strands-tile.selected::before {
-  background: #4fc3f7;
+  background: #fff5e1 !important;
 }
-.strands-tile.found::before {
-  background: #7be07b;
+.strands-tile.found {
+  color: #222 !important;
+}
+.strands-tile.found.theme {
+  color: #222 !important;
+}
+.strands-tile.found.theme::before {
+  background: #b3e5fc !important;
+}
+.strands-tile.found.spangram {
+  color: #222 !important;
+}
+.strands-tile.found.spangram::before {
+  background: #fff9c4 !important;
 }
 .strands-connection-line {
   position: absolute;
   pointer-events: none;
   z-index: 1;
+}
+.strands-connection-line.selected {
+  stroke: #fff5e1 !important;
+}
+.strands-connection-line.theme {
+  stroke: #b3e5fc !important;
+}
+.strands-connection-line.spangram {
+  stroke: #fff9c4 !important;
+}
+@keyframes shake {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-8px); }
+  80% { transform: translateX(8px); }
+  100% { transform: translateX(0); }
+}
+#strands-live-word.shake {
+  animation: shake 0.4s;
 }
 @media (max-width: 600px) {
   .strands-grid {
