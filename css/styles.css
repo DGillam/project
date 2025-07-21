@@ -8,16 +8,6 @@ body {
   /* Remove flex centering to allow scrolling and normal flow */
 }
 
-.container, .connections-container, .strands-container {
-  margin-top: 44px !important;
-  margin-bottom: 0 !important;
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-  max-width: 100vw;
-  padding-left: 1vw;
-  padding-right: 1vw;
-}
-
 .container {
   max-width: 400px;
   padding: 2rem;
@@ -27,55 +17,6 @@ body {
 
 .container.wide {
   max-width: 500px;
-}
-
-.top-bar {
-  min-height: 40px;
-}
-
-.top-bar-title {
-  font-size: 1.02rem;
-  margin: 0;
-}
-
-.top-bar-emoji {
-  font-size: 1.25rem !important;
-  right: 7px !important;
-}
-
-.back-arrow {
-  width: 26px;
-  height: 26px;
-  left: 6px;
-}
-
-.back-arrow::before {
-  width: 10px;
-  height: 10px;
-  border-width: 2px;
-  margin-left: 1px;
-}
-
-/* Strands theme box tighter */
-.strands-theme-box {
-  max-width: 90vw;
-  font-size: 0.8em;
-  padding: 0.12em 0.3em 0.13em 0.3em;
-  margin-bottom: 0.05em;
-}
-
-.strands-theme-label {
-  font-size: 0.7em;
-  margin-bottom: 0.05em;
-}
-
-.strands-theme-text {
-  font-size: 0.9em;
-}
-
-#strands-word-count, #connections-lives {
-  margin-bottom: 0 !important;
-  font-size: 1em !important;
 }
 
 h1 {
@@ -96,47 +37,23 @@ h1 {
   gap: 1rem;
 }
 
-.game-btn, .connections-controls button {
-  padding: 0.7rem !important;
-  font-size: 1em !important;
-  margin-bottom: 0.2rem !important;
+.game-btn {
+  background-color: #a0452e;
+  color: #fffdfc;
+  text-decoration: none;
+  padding: 1rem;
+  border-radius: 12px;
+  font-weight: bold;
+  transition: transform 0.2s, background 0.2s;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-bottom: 0.5rem;
 }
 
-.connections-controls {
-  gap: 0.5rem !important;
-  margin-top: 0.05rem !important;
-}
-
-.connections-instructions {
-  margin-top: 8px !important;
-  margin-bottom: 4px !important;
-  font-size: 0.98em !important;
-}
-
-#keyboard {
-  margin-top: 8px !important;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2px !important;
-  justify-content: center;
-}
-
-.key {
-  padding: 7px 0 !important;
-  font-size: 0.98rem !important;
-  max-width: 99vw !important;
-}
-
-.key.enter, .key.del {
-  font-size: 0.98rem !important;
-  padding-left: 4px !important;
-  padding-right: 4px !important;
-}
-
-.row {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 5px;
+.game-btn:hover {
+  background-color: #c55b3b;
+  transform: scale(1.05);
 }
 
 /* Tile styles for all games */
@@ -236,8 +153,7 @@ h1 {
   max-width: 420px;
   margin: 0 auto 1.5rem auto;
 }
-.connections-grid, .strands-grid, #wordle-board {
-  margin-bottom: 0.05rem !important;
+.connections-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
@@ -249,6 +165,13 @@ h1 {
 }
 
 /* Keyboard styles (Wordle) */
+#keyboard {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+}
 .key {
   padding: 10px 12px;
   background: #804040;
