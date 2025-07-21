@@ -2,6 +2,7 @@ const answer = "TAILS";
 let currentRow = 0;
 let currentGuess = "";
 const letterStatus = {}; // track letter states
+let gameOver = false;
 
 const board = document.getElementById("wordle-board");
 const messageEl = document.getElementById("message");
@@ -46,6 +47,7 @@ function renderKeyboard() {
 }
 
 function handleKey(key) {
+  if (gameOver) return;
   if (key === 'ENTER') {
     submitGuess();
   } else if (key === 'DEL') {
@@ -59,6 +61,7 @@ function handleKey(key) {
 }
 
 function pressKey(letter) {
+  if (gameOver) return;
   if (currentGuess.length < 5) {
     currentGuess += letter;
     updateTiles();
@@ -73,6 +76,7 @@ function updateTiles() {
 }
 
 function submitGuess() {
+  if (gameOver) return;
   if (currentGuess.length !== 5) return;
 
   const row = board.children[currentRow];
@@ -97,8 +101,10 @@ function submitGuess() {
 
   if (guess === answer) {
     messageEl.innerHTML = `<strong>Clever Seal, you cracked it!</strong><br>A memory of our very first conversation:<br>"If you could have any animal tail, which would it be and why?"`;
+    gameOver = true;
   } else if (currentRow === 5) {
     messageEl.innerHTML = `<strong>Still my favorite Seal, even if you didn’t guess it.</strong><br>A memory of our very first conversation:<br>"If you could have any animal tail, which would it be and why?"`;
+    gameOver = true;
   } else {
     currentRow++;
     currentGuess = "";
@@ -119,5 +125,18 @@ function updateKeyColor(letter, status) {
 // Call renderKeyboard() after DOM is ready
 window.addEventListener('DOMContentLoaded', () => {
   renderKeyboard();
-  // ...existing code to render board, etc...
+  // Add physical keyboard support
+  document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    let key = e.key.toUpperCase();
+    if (key === 'BACKSPACE') key = 'DEL';
+    if (key === 'ENTER') key = 'ENTER';
+    if (key.length === 1 && key >= 'A' && key <= 'Z') {
+      handleKey(key);
+      e.preventDefault();
+    } else if (key === 'ENTER' || key === 'DEL') {
+      handleKey(key);
+      e.preventDefault();
+    }
+  });
 });
