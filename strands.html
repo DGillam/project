@@ -155,6 +155,28 @@
       align-items: center;
       box-shadow: 0 2px 8px #0002;
     }
+    .back-arrow {
+      position: absolute;
+      top: 6px;
+      left: 12px;
+      width: 36px;
+      height: 36px;
+      z-index: 300;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+    }
+    .back-arrow::before {
+      content: '';
+      display: block;
+      width: 18px;
+      height: 18px;
+      border-left: 4px solid #fff5e1;
+      border-bottom: 4px solid #fff5e1;
+      transform: rotate(45deg);
+      margin-left: 8px;
+    }
     .strands-container {
       margin-top: 68px !important;
     }
@@ -162,8 +184,8 @@
       .top-bar { min-height: 38px; }
       .strands-container { margin-top: 56px !important; }
       .back-arrow {
-        top: 10px;
-        left: 8px;
+        top: 4px;
+        left: 4px;
         width: 28px;
         height: 28px;
       }
