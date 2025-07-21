@@ -73,7 +73,10 @@ function renderGrid() {
     for (let c = 0; c < 8; c++) {
       const tile = document.createElement("div");
       tile.className = "strands-tile";
-      tile.textContent = gridLetters[r][c];
+      // Wrap letter in a span for full CSS control
+      const letterSpan = document.createElement('span');
+      letterSpan.textContent = gridLetters[r][c];
+      tile.appendChild(letterSpan);
       tile.onclick = () => selectTile(r, c, tile);
       // Add selection circle for selected tiles (no number)
       const selIdx = selected.findIndex(([sr, sc]) => sr === r && sc === c);
@@ -155,7 +158,7 @@ function submitSelection() {
     selectionState = 'submitted';
     renderGrid();
     updateWordCount();
-    if (foundWords.length === themeWords.length) {
+    if (foundWords.filter(w => w.type === 'theme').length === themeWords.length && foundWords.some(w => w.type === 'spangram')) {
       message.textContent = "You found all the theme words!";
     }
   } else if (word === spangram && selected.length === 9 && !foundWords.some(w => w.word === word)) {
@@ -164,6 +167,10 @@ function submitSelection() {
     selected = [];
     selectionState = 'submitted';
     renderGrid();
+    animateSpangramBounce(); // <-- trigger bounce
+    if (foundWords.filter(w => w.type === 'theme').length === themeWords.length && foundWords.some(w => w.type === 'spangram')) {
+      message.textContent = "You found all the theme words!";
+    }
   } else {
     selectionState = 'invalid';
     selected = [];
@@ -174,7 +181,9 @@ function submitSelection() {
 
 // Update word count when a word is found
 function updateWordCount() {
-  wordCount.innerHTML = `<strong>${foundWords.length} of 8</strong> theme words found.`;
+  const themeCount = foundWords.filter(w => w.type === 'theme').length;
+  const spangramCount = foundWords.some(w => w.type === 'spangram') ? 1 : 0;
+  wordCount.innerHTML = `<strong>${themeCount} of ${themeWords.length}</strong> theme words found.` + (spangramCount ? ` <span style="color:#fff9c4;">+ spangram!</span>` : '');
 }
 
 function selectTile(r, c, tile) {
@@ -365,6 +374,18 @@ style.innerHTML = `
 #strands-live-word.shake {
   animation: shake 0.4s;
 }
+@keyframes strands-bounce {
+  0%   { transform: scale(1) translateY(0); }
+  20%  { transform: scale(1.2,0.8) translateY(-8%); }
+  40%  { transform: scale(0.95,1.1) translateY(-18%); }
+  60%  { transform: scale(1.05,0.95) translateY(0); }
+  80%  { transform: scale(0.98,1.02) translateY(-6%); }
+  100% { transform: scale(1) translateY(0); }
+}
+.strands-tile.bounce-spangram,
+.strands-tile.bounce-spangram::before {
+  animation: strands-bounce 0.7s cubic-bezier(.68,-0.55,.27,1.55) 1;
+}
 @media (max-width: 600px) {
   .strands-grid {
     width: 98vw;
@@ -385,3 +406,39 @@ style.innerHTML = `
 }
 `;
 document.head.appendChild(style);
+
+// Add bounce animation CSS for spangram
+const bounceStyle = document.createElement('style');
+bounceStyle.innerHTML = `
+@keyframes strands-bounce {
+  0%   { transform: scale(1) translateY(0); }
+  20%  { transform: scale(1.2,0.8) translateY(-8%); }
+  40%  { transform: scale(0.95,1.1) translateY(-18%); }
+  60%  { transform: scale(1.05,0.95) translateY(0); }
+  80%  { transform: scale(0.98,1.02) translateY(-6%); }
+  100% { transform: scale(1) translateY(0); }
+}
+.strands-tile.bounce-spangram,
+.strands-tile.bounce-spangram::before {
+  animation: strands-bounce 0.7s cubic-bezier(.68,-0.55,.27,1.55) 1;
+}
+`;
+document.head.appendChild(bounceStyle);
+
+function animateSpangramBounce() {
+  foundWords.forEach(wordObj => {
+    if (wordObj.type === 'spangram') {
+      wordObj.positions.forEach(([r, c]) => {
+        const idx = r * 8 + c;
+        const tile = grid.children[idx];
+        if (tile) {
+          tile.classList.add('bounce-spangram');
+          // Remove and re-add to restart animation if needed
+          tile.offsetWidth; // force reflow
+          tile.classList.remove('bounce-spangram');
+          setTimeout(() => tile.classList.add('bounce-spangram'), 10);
+        }
+      });
+    }
+  });
+}
