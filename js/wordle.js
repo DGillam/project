@@ -1,4 +1,3 @@
-
 const answer = "TAILS";
 let currentRow = 0;
 let currentGuess = "";
@@ -19,35 +18,45 @@ for (let i = 0; i < 6; i++) {
   board.appendChild(row);
 }
 
-const keyboard = document.getElementById("keyboard");
-const keys = "QWERTYUIOPASDFGHJKLZXCVBNM".split("");
-const keyButtons = {};
+// --- Keyboard Layout ---
+const keyboardRows = [
+  ['Q','W','E','R','T','Y','U','I','O','P'],
+  ['A','S','D','F','G','H','J','K','L'],
+  ['ENTER','Z','X','C','V','B','N','M','DEL']
+];
 
-keys.forEach(letter => {
-  const key = document.createElement("button");
-  key.className = "key";
-  key.textContent = letter;
-  key.onclick = () => pressKey(letter);
-  keyboard.appendChild(key);
-  keyButtons[letter] = key;
-});
+function renderKeyboard() {
+  const keyboard = document.getElementById('keyboard');
+  keyboard.innerHTML = '';
+  keyboardRows.forEach((row, rowIdx) => {
+    const rowDiv = document.createElement('div');
+    rowDiv.className = 'keyboard-row';
+    row.forEach((key, i) => {
+      const keyBtn = document.createElement('button');
+      keyBtn.className = 'key';
+      keyBtn.textContent = key === 'ENTER' ? 'Enter' : (key === 'DEL' ? 'Del' : key);
+      if (key === 'ENTER') keyBtn.classList.add('enter');
+      if (key === 'DEL') keyBtn.classList.add('del');
+      keyBtn.setAttribute('data-key', key);
+      keyBtn.onclick = () => handleKey(key);
+      rowDiv.appendChild(keyBtn);
+    });
+    keyboard.appendChild(rowDiv);
+  });
+}
 
-const enterKey = document.createElement("button");
-enterKey.className = "key";
-enterKey.textContent = "Enter";
-enterKey.onclick = submitGuess;
-keyboard.appendChild(enterKey);
-
-const delKey = document.createElement("button");
-delKey.className = "key";
-delKey.textContent = "Del";
-delKey.onclick = () => {
-  if (currentGuess.length > 0) {
-    currentGuess = currentGuess.slice(0, -1);
-    updateTiles();
+function handleKey(key) {
+  if (key === 'ENTER') {
+    submitGuess();
+  } else if (key === 'DEL') {
+    if (currentGuess.length > 0) {
+      currentGuess = currentGuess.slice(0, -1);
+      updateTiles();
+    }
+  } else {
+    pressKey(key);
   }
-};
-keyboard.appendChild(delKey);
+}
 
 function pressKey(letter) {
   if (currentGuess.length < 5) {
@@ -105,3 +114,9 @@ function updateKeyColor(letter, status) {
     key.classList.add(status);
   }
 }
+
+// Call renderKeyboard() after DOM is ready
+window.addEventListener('DOMContentLoaded', () => {
+  renderKeyboard();
+  // ...existing code to render board, etc...
+});
