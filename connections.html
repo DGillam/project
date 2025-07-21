@@ -12,12 +12,13 @@
     }
     #connections-lives {
       font-size: 1.5rem;
+      margin-bottom: 0.2rem;
     }
     .connections-controls {
       display: flex;
       gap: 1rem;
       justify-content: center;
-      margin-top: 2rem;
+      margin-top: 0.2rem;
     }
     .connections-container {
       max-width: 500px;
@@ -30,62 +31,89 @@
       text-align: center;
       margin: 0 0 1.5rem 0;
     }
-    .back-arrow {
-      position: fixed;
-      top: 18px;
-      left: 16px;
-      width: 36px;
-      height: 36px;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-    }
-    .back-arrow::before {
-      content: '';
-      display: block;
-      width: 18px;
-      height: 18px;
-      border-left: 4px solid #fff5e1;
-      border-bottom: 4px solid #fff5e1;
-      transform: rotate(45deg);
-      margin-left: 8px;
-    }
     .top-bar {
       width: 100vw;
       min-height: 48px;
-      background: rgba(30,20,20,0.18);
+      background: #a0452e;
       position: fixed;
       top: 0; left: 0;
       z-index: 200;
       display: flex;
       align-items: center;
       box-shadow: 0 2px 8px #0002;
+      justify-content: center;
+    }
+    .top-bar-title {
+      color: #fff5e1;
+      font-size: 1.13rem;
+      font-weight: bold;
+      letter-spacing: 0.03em;
+      margin: 0 auto;
+      text-align: center;
+      flex: 1;
+      pointer-events: none;
+    }
+    .back-arrow {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 32px;
+      height: 32px;
+      z-index: 300;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      background: #fff5e1;
+      border-radius: 50%;
+      box-shadow: 0 1px 4px #0002;
+      border: none;
+      padding: 0;
+      transition: background 0.15s;
+    }
+    .back-arrow:active, .back-arrow:focus {
+      background: #ffe8cc;
+    }
+    .back-arrow::before {
+      content: '';
+      display: block;
+      width: 14px;
+      height: 14px;
+      border-left: 3px solid #a0452e;
+      border-bottom: 3px solid #a0452e;
+      transform: rotate(45deg);
+      margin-left: 2px;
+      margin-top: 1px;
     }
     .connections-instructions, .connections-container {
       margin-top: 68px !important;
     }
     @media (max-width: 600px) {
+      .top-bar { min-height: 38px; }
       .back-arrow {
-        top: 10px;
-        left: 8px;
-        width: 28px;
-        height: 28px;
+        width: 26px;
+        height: 26px;
+        left: 6px;
       }
       .back-arrow::before {
-        width: 13px;
-        height: 13px;
-        border-width: 3px;
-        margin-left: 5px;
+        width: 10px;
+        height: 10px;
+        border-width: 2px;
+        margin-left: 1px;
       }
-      .top-bar { min-height: 38px; }
+      .top-bar-title {
+        font-size: 0.98rem;
+      }
       .connections-instructions, .connections-container { margin-top: 56px !important; }
     }
   </style>
 </head>
 <body>
-    <div class="top-bar"><a href="index.html" class="back-arrow" aria-label="Back to Home"></a></div>
+    <div class="top-bar">
+      <a href="index.html" class="back-arrow" aria-label="Back to Home"></a>
+      <span class="top-bar-title">Seal-abration Games</span>
+    </div>
     <div class="connections-instructions" style="text-align:center;font-size:1.1em;color:#ffe8cc;margin-top:18px;margin-bottom:8px;">Create four groups of four!</div>
     <div class="connections-container">
       <!-- <h1>Seal Connections</h1> -->
