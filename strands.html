@@ -91,7 +91,11 @@
       font-size: 1.1rem;
     }
     #strands-word-count {
-      margin-bottom: 0.3em !important;
+      margin-bottom: 0.1em !important;
+      font-size: 1.05rem;
+    }
+    .strands-grid {
+      margin-bottom: 0.7rem;
     }
     /* --- FORCE LETTER ABOVE CIRCLE AND BLACK WHEN SELECTED/FOUND --- */
     .strands-tile.selected > span,
@@ -181,19 +185,34 @@
       margin-top: 68px !important;
     }
     @media (max-width: 600px) {
-      .top-bar { min-height: 38px; }
-      .strands-container { margin-top: 56px !important; }
-      .back-arrow {
-        top: 4px;
-        left: 4px;
-        width: 28px;
-        height: 28px;
+      .top-bar { min-height: 36px; }
+      .strands-container {
+        margin-top: 44px !important;
+        max-width: 100vw;
+        padding: 0 1vw;
       }
-      .back-arrow::before {
-        width: 13px;
-        height: 13px;
-        border-width: 3px;
-        margin-left: 5px;
+      #strands-word-count {
+        margin-bottom: 0.02em !important;
+        font-size: 1.05rem;
+      }
+      .strands-grid {
+        width: 98vw;
+        height: 98vw;
+        max-width: 98vw;
+        max-height: 98vw;
+        gap: 1vw;
+        margin-bottom: 0.2rem;
+      }
+      .strands-tile {
+        font-size: 5vw;
+        min-width: 0;
+        min-height: 0;
+      }
+      .strands-tile.selected::before,
+      .strands-tile.found::before {
+        width: 2.8em;
+        height: 2.8em;
+        border-width: 2.5px;
       }
     }
   </style>
