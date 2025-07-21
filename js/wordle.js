@@ -102,6 +102,7 @@ function submitGuess() {
   } else {
     currentRow++;
     currentGuess = "";
+    updateTiles(); // Ensure next row is ready for input
   }
 }
 
