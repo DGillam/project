@@ -121,6 +121,26 @@
     .strands-tile.found::before {
       z-index: 0;
     }
+    /* --- ENFORCE LETTER VISIBILITY ABOVE CIRCLE FOR ALL CASES --- */
+    .strands-tile.selected > *,
+    .strands-tile.found > *,
+    .strands-tile.selected,
+    .strands-tile.found {
+      color: #222 !important;
+      position: relative;
+      z-index: 2 !important;
+      text-shadow: 0 0 1px #fff, 0 0 2px #fff5e1;
+    }
+    .strands-tile > * {
+      position: relative;
+      z-index: 2 !important;
+      color: #fff5e1 !important;
+      text-shadow: none;
+    }
+    .strands-tile.selected::before,
+    .strands-tile.found::before {
+      z-index: 0 !important;
+    }
   </style>
 </head>
 <body>
