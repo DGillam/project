@@ -153,24 +153,22 @@ function submitSelection() {
   const word = selected.map(([r, c]) => gridLetters[r][c]).join('');
   if (themeWords.includes(word) && !foundWords.some(w => w.word === word)) {
     foundWords.push({word, positions: [...selected], type: 'theme'});
-    lastFoundWord = word;
+    lastFoundWord = word === spangram ? word + ' (spangram!)' : word;
     selected = [];
     selectionState = 'submitted';
     renderGrid();
     updateWordCount();
-    updateFoundWordsDisplay();
     if (foundWords.filter(w => w.type === 'theme').length === themeWords.length && foundWords.some(w => w.type === 'spangram')) {
       message.textContent = "You found all the theme words!";
     }
   } else if (word === spangram && selected.length === 9 && !foundWords.some(w => w.word === word)) {
     foundWords.push({word, positions: [...selected], type: 'spangram'});
-    lastFoundWord = word;
+    lastFoundWord = word + ' (spangram!)';
     selected = [];
     selectionState = 'submitted';
     renderGrid();
     animateSpangramBounce(); // <-- trigger bounce
     updateWordCount();
-    updateFoundWordsDisplay();
     if (foundWords.filter(w => w.type === 'theme').length === themeWords.length && foundWords.some(w => w.type === 'spangram')) {
       message.textContent = "You found all the theme words!";
     }
@@ -191,14 +189,9 @@ function updateWordCount() {
   wordCount.innerHTML = `<strong>${totalFound} of ${themeWords.length + 1}</strong> theme words found.`;
 }
 
-// Update found words display at the top
-function updateFoundWordsDisplay() {
-  if (!liveWordDisplay) return;
-  const found = foundWords.map(w => {
-    if (w.type === 'spangram') return w.word + ' (spangram!)';
-    return w.word;
-  });
-  liveWordDisplay.textContent = found.join(', ');
+// Clear live word display on new selection
+function clearLiveWordDisplay() {
+  liveWordDisplay.textContent = '';
 }
 
 function selectTile(r, c, tile) {
