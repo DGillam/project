@@ -3,6 +3,7 @@ let currentRow = 0;
 let currentGuess = "";
 const letterStatus = {}; // track letter states
 let gameOver = false;
+let keyButtons = {};
 
 const board = document.getElementById("wordle-board");
 const messageEl = document.getElementById("message");
@@ -27,6 +28,7 @@ const keyboardRows = [
 ];
 
 function renderKeyboard() {
+  keyButtons = {};
   const keyboard = document.getElementById('keyboard');
   keyboard.innerHTML = '';
   keyboardRows.forEach((row, rowIdx) => {
@@ -41,6 +43,9 @@ function renderKeyboard() {
       keyBtn.setAttribute('data-key', key);
       keyBtn.onclick = () => handleKey(key);
       rowDiv.appendChild(keyBtn);
+      if (key.length === 1 && key >= 'A' && key <= 'Z') {
+        keyButtons[key] = keyBtn;
+      }
     });
     keyboard.appendChild(rowDiv);
   });
