@@ -91,11 +91,11 @@
       font-size: 1.1rem;
     }
     #strands-word-count {
-      margin-bottom: 0.05em !important;
+      margin-bottom: 0 !important;
       font-size: 1.13rem;
     }
     .strands-grid {
-      margin-bottom: 0.2rem;
+      margin-bottom: 0.12rem;
     }
     /* --- FORCE LETTER ABOVE CIRCLE AND BLACK WHEN SELECTED/FOUND --- */
     .strands-tile.selected > span,
@@ -151,56 +151,89 @@
     .top-bar {
       width: 100vw;
       min-height: 48px;
-      background: rgba(30,20,20,0.18);
+      background: #a0452e;
       position: fixed;
       top: 0; left: 0;
       z-index: 200;
       display: flex;
       align-items: center;
       box-shadow: 0 2px 8px #0002;
+      justify-content: center;
+    }
+    .top-bar-title {
+      color: #fff5e1;
+      font-size: 1.13rem;
+      font-weight: bold;
+      letter-spacing: 0.03em;
+      margin: 0 auto;
+      text-align: center;
+      flex: 1;
+      pointer-events: none;
     }
     .back-arrow {
       position: absolute;
-      top: 6px;
       left: 12px;
-      width: 36px;
-      height: 36px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 32px;
+      height: 32px;
       z-index: 300;
       display: flex;
       align-items: center;
       justify-content: center;
       text-decoration: none;
+      background: #fff5e1;
+      border-radius: 50%;
+      box-shadow: 0 1px 4px #0002;
+      border: none;
+      padding: 0;
+      transition: background 0.15s;
+    }
+    .back-arrow:active, .back-arrow:focus {
+      background: #ffe8cc;
     }
     .back-arrow::before {
       content: '';
       display: block;
-      width: 18px;
-      height: 18px;
-      border-left: 4px solid #fff5e1;
-      border-bottom: 4px solid #fff5e1;
+      width: 14px;
+      height: 14px;
+      border-left: 3px solid #a0452e;
+      border-bottom: 3px solid #a0452e;
       transform: rotate(45deg);
-      margin-left: 8px;
+      margin-left: 2px;
+      margin-top: 1px;
     }
-    .top-bar-title {
-      flex: 1;
-      text-align: center;
-      font-size: 1.2rem;
-      color: #fff5e1;
-      font-weight: 500;
-      text-shadow: 0 0 2px rgba(0, 0, 0, 0.7);
-    }
-    .strands-container {
-      margin-top: 68px !important;
+    .top-bar-emoji {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.5rem;
+      user-select: none;
     }
     @media (max-width: 600px) {
-      .top-bar { min-height: 36px; }
+      .top-bar { min-height: 38px; }
+      .back-arrow {
+        width: 26px;
+        height: 26px;
+        left: 6px;
+      }
+      .back-arrow::before {
+        width: 10px;
+        height: 10px;
+        border-width: 2px;
+        margin-left: 1px;
+      }
+      .top-bar-title {
+        font-size: 0.98rem;
+      }
       .strands-container {
         margin-top: 44px !important;
         max-width: 100vw;
         padding: 0 1vw;
       }
       #strands-word-count {
-        margin-bottom: 0.01em !important;
+        margin-bottom: 0 !important;
         font-size: 1.18rem;
       }
       .strands-grid {
@@ -209,7 +242,7 @@
         max-width: 98vw;
         max-height: 98vw;
         gap: 1vw;
-        margin-bottom: 0.08rem;
+        margin-bottom: 0.04rem;
       }
       .strands-tile {
         font-size: 6vw;
@@ -229,6 +262,7 @@
     <div class="top-bar">
       <a href="index.html" class="back-arrow" aria-label="Back to Home"></a>
       <span class="top-bar-title">Seal-abration Games</span>
+      <span class="top-bar-emoji" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:1.5rem;user-select:none;">🦭</span>
     </div>
     <div class="strands-container">
       <div id="strands-grid" class="strands-grid"></div>
