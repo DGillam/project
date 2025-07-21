@@ -90,6 +90,37 @@
       color: #ffe8cc;
       font-size: 1.1rem;
     }
+    /* --- FORCE LETTER ABOVE CIRCLE AND BLACK WHEN SELECTED/FOUND --- */
+    .strands-tile.selected > span,
+    .strands-tile.found > span {
+      color: #222 !important;
+      position: relative;
+      z-index: 2 !important;
+      pointer-events: none;
+    }
+    .strands-tile > span {
+      position: relative;
+      z-index: 2 !important;
+      display: inline-block;
+      /* fallback color for unselected */
+      color: #fff5e1 !important;
+      pointer-events: none;
+    }
+    /* fallback for text node letters (if not using <span>) */
+    .strands-tile.selected,
+    .strands-tile.found {
+      color: #222 !important;
+      z-index: 2;
+    }
+    .strands-tile {
+      /* ensure stacking context */
+      position: relative;
+      z-index: 1;
+    }
+    .strands-tile.selected::before,
+    .strands-tile.found::before {
+      z-index: 0;
+    }
   </style>
 </head>
 <body>

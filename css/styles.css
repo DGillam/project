@@ -211,3 +211,17 @@ body {
   grid-template-columns: repeat(5, 1fr);
   gap: 5px;
 }
+
+/* --- Strands tile override: ensure no global style conflicts --- */
+.strands-tile,
+.strands-tile > *,
+.strands-tile.selected,
+.strands-tile.found,
+.strands-tile.selected > *,
+.strands-tile.found > * {
+  background: none !important;
+  color: inherit !important;
+  box-shadow: none !important;
+  border: none !important;
+  z-index: auto;
+}
