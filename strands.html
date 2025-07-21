@@ -19,7 +19,7 @@
       grid-template-columns: repeat(8, 1fr);
       grid-template-rows: repeat(8, 1fr);
       gap: 6px;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.1rem;
       width: min(90vw, 400px);
       height: min(90vw, 400px);
       background: none;
@@ -90,6 +90,9 @@
       color: #ffe8cc;
       font-size: 1.1rem;
     }
+    #strands-word-count {
+      margin-bottom: 0.3em !important;
+    }
     /* --- FORCE LETTER ABOVE CIRCLE AND BLACK WHEN SELECTED/FOUND --- */
     .strands-tile.selected > span,
     .strands-tile.found > span {
@@ -153,11 +156,11 @@
       box-shadow: 0 2px 8px #0002;
     }
     .strands-container {
-      margin-top: 56px !important;
+      margin-top: 68px !important;
     }
     @media (max-width: 600px) {
       .top-bar { min-height: 38px; }
-      .strands-container { margin-top: 44px !important; }
+      .strands-container { margin-top: 56px !important; }
       .back-arrow {
         top: 10px;
         left: 8px;
@@ -176,7 +179,6 @@
 <body>
     <div class="top-bar"><a href="index.html" class="back-arrow" aria-label="Back to Home"></a></div>
     <div class="strands-container">
-      <!-- <h1>Seal Strands</h1> -->
       <div id="strands-grid" class="strands-grid"></div>
       <div id="strands-message"></div>
     </div>
