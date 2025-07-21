@@ -87,21 +87,34 @@ function submitGuess() {
   const row = board.children[currentRow];
   const guess = currentGuess.toUpperCase();
   const answerArr = answer.split("");
+  const guessArr = guess.split("");
+  const answerUsed = [false, false, false, false, false];
+  const guessResult = Array(5).fill('absent');
 
+  // First pass: mark correct
+  for (let i = 0; i < 5; i++) {
+    if (guessArr[i] === answerArr[i]) {
+      guessResult[i] = 'correct';
+      answerUsed[i] = true;
+    }
+  }
+  // Second pass: mark present
+  for (let i = 0; i < 5; i++) {
+    if (guessResult[i] === 'correct') continue;
+    for (let j = 0; j < 5; j++) {
+      if (!answerUsed[j] && guessArr[i] === answerArr[j]) {
+        guessResult[i] = 'present';
+        answerUsed[j] = true;
+        break;
+      }
+    }
+  }
+  // Apply results to tiles and keyboard
   for (let i = 0; i < 5; i++) {
     const tile = row.children[i];
-    const letter = guess[i];
-
-    if (letter === answer[i]) {
-      tile.classList.add("correct");
-      updateKeyColor(letter, "correct");
-    } else if (answer.includes(letter)) {
-      tile.classList.add("present");
-      updateKeyColor(letter, "present");
-    } else {
-      tile.classList.add("absent");
-      updateKeyColor(letter, "absent");
-    }
+    const letter = guessArr[i];
+    tile.classList.add(guessResult[i]);
+    updateKeyColor(letter, guessResult[i]);
   }
 
   if (guess === answer) {
