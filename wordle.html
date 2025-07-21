@@ -19,53 +19,21 @@
     .tile.present { background-color: #e6b800; }
     .tile.absent { background-color: #3e3e3e; }
     #keyboard {
-      margin-top: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      max-width: 420px;
-      margin-left: auto;
-      margin-right: auto;
+      margin-top: 20px !important;
+      gap: 5px !important;
     }
     .keyboard-row {
-      display: flex;
-      flex-direction: row;
-      gap: 5px;
-      width: 100%;
-      justify-content: center;
+      gap: 5px !important;
     }
     .key {
-      flex: 1 1 0;
-      min-width: 0;
-      padding: 12px 0;
-      background: #804040;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 1.1rem;
-      margin-bottom: 0;
-      max-width: 48px;
-      text-align: center;
-      transition: background 0.2s, transform 0.2s;
+      padding: 10px 12px !important;
+      font-size: 1rem !important;
+      max-width: 48px !important;
     }
-    .key:active, .key:focus {
-      background: #c55b3b;
-    }
-    .key.enter {
-      max-width: 80px;
-      flex: 1.5 1 0;
-      text-align: left;
-      padding-left: 10px;
-    }
-    .key.del {
-      max-width: 80px;
-      flex: 1.5 1 0;
-      text-align: right;
-      padding-right: 10px;
+    .key.enter, .key.del {
+      font-size: 1.1rem !important;
+      padding-left: 10px !important;
+      padding-right: 10px !important;
     }
     #message { margin-top: 20px; }
     .back-arrow {
@@ -123,43 +91,41 @@
       flex: 1;
       pointer-events: none;
     }
+    .top-bar-emoji {
+      font-size: 1.5rem !important;
+      right: 12px !important;
+    }
     .container {
-      margin-top: 68px !important;
+      max-width: 400px;
+      padding: 2rem;
+      background: transparent;
+      margin: 0 auto;
+    }
+    .container.wide {
+      max-width: 500px;
     }
     @media (max-width: 600px) {
+      .container {
+        margin-top: 56px !important;
+        padding-left: 1vw;
+        padding-right: 1vw;
+      }
       .top-bar { min-height: 38px; }
-      .back-arrow {
-        width: 26px;
-        height: 26px;
-        left: 6px;
-      }
-      .back-arrow::before {
-        width: 10px;
-        height: 10px;
-        border-width: 2px;
-        margin-left: 1px;
-      }
-      .top-bar-title {
-        font-size: 0.98rem;
-      }
-      #keyboard {
-        max-width: 99vw;
-        gap: 4px;
-      }
-      .keyboard-row {
-        gap: 3px;
-      }
-      .key {
-        font-size: 1.05rem;
-        padding: 10px 0;
-        max-width: 99vw;
-      }
-      .key.enter, .key.del {
-        max-width: 99vw;
-        font-size: 1.05rem;
-        padding-left: 6px;
-        padding-right: 6px;
-      }
+      .top-bar-title { font-size: 0.98rem; }
+      .top-bar-emoji { font-size: 1.1rem !important; right: 12px !important; }
+      .back-arrow { width: 26px; height: 26px; left: 6px; }
+      .back-arrow::before { width: 10px; height: 10px; border-width: 2px; margin-left: 1px; }
+      .strands-theme-box { font-size: 0.85em; padding: 0.18em 0.4em 0.22em 0.4em; margin-bottom: 0.1em; }
+      .strands-theme-label { font-size: 0.7em; margin-bottom: 0.05em; }
+      .strands-theme-text { font-size: 0.9em; }
+      #strands-word-count, #connections-lives { font-size: 1.08rem !important; }
+      .game-btn, .connections-controls button { padding: 0.7rem !important; font-size: 1em !important; margin-bottom: 0.2rem !important; }
+      .connections-controls { gap: 0.5rem !important; margin-top: 0.05rem !important; }
+      .connections-instructions { margin-top: 8px !important; margin-bottom: 4px !important; font-size: 0.98em !important; }
+      #keyboard { margin-top: 8px !important; gap: 2px !important; }
+      .keyboard-row { gap: 2px !important; }
+      .key { padding: 7px 0 !important; font-size: 0.98rem !important; }
+      .key.enter, .key.del { font-size: 0.98rem !important; padding-left: 4px !important; padding-right: 4px !important; }
     }
   </style>
 </head>
