@@ -197,6 +197,12 @@ function selectTile(r, c, tile) {
     // Only allow deselection (backtracking) of the last selected tile
     if (idx === selected.length - 1) {
       selected.pop();
+    } else if (idx === 0) {
+      // If user clicks the first selected tile (not last), cancel the entire selection
+      selected = [];
+      selectionState = 'idle';
+      renderGrid();
+      return;
     } else {
       // Invalid move: trying to deselect a non-last tile, show shake feedback
       selectionState = 'invalid';

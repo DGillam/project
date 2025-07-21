@@ -17,7 +17,7 @@ const connectionsData = {
     },
     {
       name: "A few of your favourite things",
-      words: ["Hortensia", "Burgundy", "Beluga", "Vermeer"],
+      words: ["Hortensia", "Burgundy", "Beluga", "Hana-bi"],
       color: "purple"
     }
   ]
