@@ -52,6 +52,20 @@
       transform: rotate(45deg);
       margin-left: 8px;
     }
+    .top-bar {
+      width: 100vw;
+      min-height: 48px;
+      background: rgba(30,20,20,0.18);
+      position: fixed;
+      top: 0; left: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 2px 8px #0002;
+    }
+    .connections-instructions, .connections-container {
+      margin-top: 56px !important;
+    }
     @media (max-width: 600px) {
       .back-arrow {
         top: 10px;
@@ -65,22 +79,25 @@
         border-width: 3px;
         margin-left: 5px;
       }
+      .top-bar { min-height: 38px; }
+      .connections-instructions, .connections-container { margin-top: 44px !important; }
     }
   </style>
 </head>
 <body>
-  <a href="index.html" class="back-arrow" aria-label="Back to Home"></a>
-  <div class="connections-container">
-    <!-- <h1>Seal Connections</h1> -->
-    <div id="connections-board"></div>
-    <div id="connections-lives"></div>
-    <div id="connections-message"></div>
-    <div class="connections-controls">
-      <button id="shuffle-btn" class="game-btn">Shuffle</button>
-      <button id="deselect-btn" class="game-btn">Deselect All</button>
-      <button id="submit-btn" class="game-btn">Submit</button>
+    <div class="top-bar"><a href="index.html" class="back-arrow" aria-label="Back to Home"></a></div>
+    <div class="connections-instructions" style="text-align:center;font-size:1.1em;color:#ffe8cc;margin-top:18px;margin-bottom:8px;">Create four groups of four!</div>
+    <div class="connections-container">
+      <!-- <h1>Seal Connections</h1> -->
+      <div id="connections-board"></div>
+      <div id="connections-lives"></div>
+      <div id="connections-message"></div>
+      <div class="connections-controls">
+        <button id="shuffle-btn" class="game-btn">Shuffle</button>
+        <button id="deselect-btn" class="game-btn">Deselect All</button>
+        <button id="submit-btn" class="game-btn">Submit</button>
+      </div>
     </div>
-  </div>
-  <script src="js/connections.js"></script>
+    <script src="js/connections.js"></script>
 </body>
 </html>

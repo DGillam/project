@@ -141,29 +141,23 @@
     .strands-tile.found::before {
       z-index: 0 !important;
     }
-    .back-arrow {
+    .top-bar {
+      width: 100vw;
+      min-height: 48px;
+      background: rgba(30,20,20,0.18);
       position: fixed;
-      top: 18px;
-      left: 16px;
-      width: 36px;
-      height: 36px;
-      z-index: 100;
+      top: 0; left: 0;
+      z-index: 200;
       display: flex;
       align-items: center;
-      justify-content: center;
-      text-decoration: none;
+      box-shadow: 0 2px 8px #0002;
     }
-    .back-arrow::before {
-      content: '';
-      display: block;
-      width: 18px;
-      height: 18px;
-      border-left: 4px solid #fff5e1;
-      border-bottom: 4px solid #fff5e1;
-      transform: rotate(45deg);
-      margin-left: 8px;
+    .strands-container {
+      margin-top: 56px !important;
     }
     @media (max-width: 600px) {
+      .top-bar { min-height: 38px; }
+      .strands-container { margin-top: 44px !important; }
       .back-arrow {
         top: 10px;
         left: 8px;
@@ -180,12 +174,12 @@
   </style>
 </head>
 <body>
-  <a href="index.html" class="back-arrow" aria-label="Back to Home"></a>
-  <div class="strands-container">
-    <!-- <h1>Seal Strands</h1> -->
-    <div id="strands-grid" class="strands-grid"></div>
-    <div id="strands-message"></div>
-  </div>
-  <script src="js/strands.js"></script>
-</body>
+    <div class="top-bar"><a href="index.html" class="back-arrow" aria-label="Back to Home"></a></div>
+    <div class="strands-container">
+      <!-- <h1>Seal Strands</h1> -->
+      <div id="strands-grid" class="strands-grid"></div>
+      <div id="strands-message"></div>
+    </div>
+    <script src="js/strands.js"></script>
+  </body>
 </html>

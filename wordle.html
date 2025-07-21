@@ -50,6 +50,20 @@
       transform: rotate(45deg);
       margin-left: 8px;
     }
+    .top-bar {
+      width: 100vw;
+      min-height: 48px;
+      background: rgba(30,20,20,0.18);
+      position: fixed;
+      top: 0; left: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 2px 8px #0002;
+    }
+    .container {
+      margin-top: 56px !important;
+    }
     @media (max-width: 600px) {
       .back-arrow {
         top: 10px;
@@ -63,16 +77,19 @@
         border-width: 3px;
         margin-left: 5px;
       }
+      .top-bar { min-height: 38px; }
+      .container { margin-top: 44px !important; }
     }
   </style>
 </head>
 <body>
-  <a href="index.html" class="back-arrow" aria-label="Back to Home"></a>
-  <div class="container">
-    <div id="wordle-board"></div>
-    <div id="keyboard"></div>
-    <p id="message"></p>
-  </div>
-  <script src="js/wordle.js"></script>
-</body>
+    <div class="top-bar"><a href="index.html" class="back-arrow" aria-label="Back to Home"></a></div>
+    <div class="container">
+      <!-- <h1>Wordle for Seal</h1> -->
+      <div id="wordle-board"></div>
+      <div id="keyboard"></div>
+      <p id="message"></p>
+    </div>
+    <script src="js/wordle.js"></script>
+  </body>
 </html>
