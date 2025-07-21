@@ -213,10 +213,10 @@ function selectTile(r, c, tile) {
   } else if (selected.length === 0 || isAdjacent(selected[selected.length-1], [r, c])) {
     selected.push([r, c]);
   } else {
-    // Invalid move: trying to select a non-adjacent tile, show shake feedback
-    selectionState = 'invalid';
+    // Invalid move: trying to select a non-adjacent tile, cancel the entire selection
+    selected = [];
+    selectionState = 'idle';
     renderGrid();
-    setTimeout(() => { selectionState = 'idle'; renderGrid(); }, 400);
     return;
   }
   selectionState = 'selecting';

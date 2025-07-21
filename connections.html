@@ -30,9 +30,46 @@
       text-align: center;
       margin: 0 0 1.5rem 0;
     }
+    .back-arrow {
+      position: fixed;
+      top: 18px;
+      left: 16px;
+      width: 36px;
+      height: 36px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+    }
+    .back-arrow::before {
+      content: '';
+      display: block;
+      width: 18px;
+      height: 18px;
+      border-left: 4px solid #fff5e1;
+      border-bottom: 4px solid #fff5e1;
+      transform: rotate(45deg);
+      margin-left: 8px;
+    }
+    @media (max-width: 600px) {
+      .back-arrow {
+        top: 10px;
+        left: 8px;
+        width: 28px;
+        height: 28px;
+      }
+      .back-arrow::before {
+        width: 13px;
+        height: 13px;
+        border-width: 3px;
+        margin-left: 5px;
+      }
+    }
   </style>
 </head>
 <body>
+  <a href="index.html" class="back-arrow" aria-label="Back to Home"></a>
   <div class="connections-container">
     <h1>Seal Connections</h1>
     <div id="connections-board"></div>
@@ -43,7 +80,6 @@
       <button id="deselect-btn" class="game-btn">Deselect All</button>
       <button id="submit-btn" class="game-btn">Submit</button>
     </div>
-    <button onclick="location.href='index.html'" class="game-btn" style="margin-top: 1.2rem;">Back to Home</button>
   </div>
   <script src="js/connections.js"></script>
 </body>
